@@ -8,7 +8,7 @@ canvas.height = window.innerHeight
 // grad.addColorStop(0.42, "#0F7855");
 // grad.addColorStop(0.76, "#418751");
 // grad.addColorStop(1, "#278033");
-localStorage.removeItem("pokemon")
+// localStorage.removeItem("pokemon")
 localStorage.setItem("pokemon", JSON.stringify([]))
 let pokemon = JSON.parse(localStorage.getItem("pokemon"))
 
