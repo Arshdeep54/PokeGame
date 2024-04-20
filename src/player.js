@@ -8,7 +8,7 @@ class Player {
         this.speed = 5;
         this.lastMove = 'front';
         this.ctx = ctx
-        this.isAllowedInGrass = (localStorage.getItem("pokemon").length ==1)
+        this.isAllowedInGrass = (JSON.parse(localStorage.getItem("pokemon")).length ==1)
         // this.isAllowedInGrass = true
         this.inGrass = null
         this.entered = null
@@ -147,7 +147,7 @@ class Player {
                 else if (buildingType === "grasses") {
                     for (const building of map[buildingType]) {
                         if (this.collidesWith(building)) {
-                            console.log(this.isAllowedInGrass, "allowed");
+                            // console.log(this.isAllowedInGrass, "allowed",JSON.parse(localStorage.getItem("pokemon")));
                             // this.isAllowedInGrass=(localStorage.getItem("pokemon").length ==1)
                             if (this.isAllowedInGrass) {
                                 // console.log(building)

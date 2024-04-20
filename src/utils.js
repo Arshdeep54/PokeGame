@@ -23,30 +23,34 @@ function getMap() {
     };
 }
 function getOakMap() {
-    let tablexpos=canvas.width/2
-    let tableypos=canvas.height/2-200
+    let tablexpos = canvas.width / 2
+    let tableypos = canvas.height / 2 - 200
     return {
         rectangles: [
-            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "blue","OAK"),
-            new Rectangle(canvas.width / 2 - 250, canvas.height / 2-40 , 10, 80, "red","door")
+            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "blue", "OAK"),
+            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
         ],
-        tables:[
-            new Table(tablexpos,tableypos,100,100,200,100,"table")
+        tables: [
+            new Table(tablexpos, tableypos, 100, 100, 200, 100, "table")
         ],
-        balls:[
-            new Ball(tablexpos+40,tableypos+40,20,"blue"),
-            new Ball(tablexpos+100,tableypos+40,20,"yellow"),
-            new Ball(tablexpos+160,tableypos+40,20,"black"),
+        balls: [
+            new Ball(tablexpos + 40, tableypos + 40, 20, "blue"),
+            new Ball(tablexpos + 100, tableypos + 40, 20, "yellow"),
+            new Ball(tablexpos + 160, tableypos + 40, 20, "black"),
         ]
     }
 }
-function getBattleMap(){
+function getBattleMap() {
     return {
         hpbars: [
-            new Healthbar(canvas.width / 2 - 250, canvas.height / 2 - 250, 21, 35,3, 30,50,false,250,100,""),
-            new Healthbar(canvas.width / 2 +75, canvas.height / 2 +50, 29, 35,5, 30,60,true,250,100,"Bulbasore"),
+            new Healthbar(canvas.width / 2 - 250, canvas.height / 2 - 250, 21, 35, 3, 30, 50, false, 250, 100, ""),
+            new Healthbar(canvas.width / 2 + 75, canvas.height / 2 + 50, 29, 35, 5, 30, 60, true, 250, 100, "Bulbasore"),
             // new Rectangle(canvas.width / 2 - 250, canvas.height / 2-40 , 10, 80, "red","door")
         ],
+        pokemons: [
+            new Pokemon(canvas.width / 2 - 250, canvas.height / 2 - 70, true, 30, 40),
+            new Pokemon(canvas.width / 2 + 150, canvas.height / 2 - 200, false, 30, 40)
+        ]
 
     }
 }

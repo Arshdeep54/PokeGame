@@ -9,11 +9,14 @@ canvas.height = window.innerHeight
 // grad.addColorStop(0.76, "#418751");
 // grad.addColorStop(1, "#278033");
 // localStorage.removeItem("pokemon")
-localStorage.setItem("pokemon", JSON.stringify([]))
+if (localStorage.getItem("pokemon") === null) {
+
+    localStorage.setItem("pokemon", JSON.stringify([]))
+}
 let pokemon = JSON.parse(localStorage.getItem("pokemon"))
 
 let textToDisplay = " "
-const player = new Player(300, 100, 40, 60, 'blue', context, textToDisplay);
+const player = new Player(490, 90, 40, 60, 'blue', context, textToDisplay);
 let rivalPokemonXpos = null
 
 const textBox = new TextBox("Your pokemon is dead ", canvas.width / 2 - 225, canvas.height - 150, 450, 100, context)
@@ -23,18 +26,25 @@ let imap = getMap();
 let map = player.mapin;
 let oakMap = getOakMap()
 let battleMap = getBattleMap()
-function handleBattle() {
+async function handleBattle() {
     if (player.inGrass) {
         player.mapin = "battle"
         player.isListening = false
         context.fillStyle = "#6ece67"
         context.fillRect(0, 0, canvas.width, canvas.height)
+
+        if (textBox.selectedMove!=null){
+            let moveData=await getMove(textBox.selectedMove.move.url)
+            console.log(moveData.stat_changes);
+            let attack_change=moveData.stat_changes.length>0?moveData.stat_changes.find(stat=>stat.stat.name=="attack").change:0
+console.log(attack_change);
+            textBox.selectedMove=null
+        }
         map = "battle"
         draw()
         textBox.draw()
         textBox.instruction = " "
         textBox.inBattle = true
-
     }
 }
 async function handleEnterPressed() {
@@ -93,7 +103,6 @@ function draw() {
     if (map != "battle") {
         player.draw();
     }
-
 }
 function init() {
     console.log("init");
@@ -134,8 +143,8 @@ async function gameLoop() {
     }
 
     if (player.inGrass) {
-
         if (!encounteredInCurrentGrass) {
+            generateRivalPok();
             rivalPokemonXpos = Math.floor(Math.random() * (player.inGrass.width + 1)) + player.inGrass.xpos
             // console.log(rivalPokemonXpos, rivalPokemonXpos % 10);
             rivalPokemonXpos = rivalPokemonXpos - rivalPokemonXpos % 10
@@ -148,7 +157,7 @@ async function gameLoop() {
     }
 
     if (pokemon[0] != null && pokemon.length > 0 && player.mapin == "OAK") {
-        textBox.text = "You got " + pokemon[0].pokemon["name"]
+        textBox.text = "You got " + "pokemon[0].pokemon["
     }
 
     if (player.enterPressed) {
@@ -187,6 +196,7 @@ function handleWallCollisions() {
 
 // change the map to a battlemap at a random xpos in grass
 // generate a random pokemon to fight 
+// render the moves according to the level 
 // a lot of maths to calculate who won 
 
 // 
