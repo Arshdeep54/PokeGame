@@ -8,8 +8,8 @@ class Player {
         this.speed = 5;
         this.lastMove = 'front';
         this.ctx = ctx
-        // this.isAllowedInGrass = (localStorage.getItem("pokemon").length ==1)
-        this.isAllowedInGrass = true
+        this.isAllowedInGrass = (localStorage.getItem("pokemon").length ==1)
+        // this.isAllowedInGrass = true
         this.inGrass = null
         this.entered = null
         this.enterPressed = false
@@ -154,6 +154,8 @@ class Player {
                                 this.inGrass = building
                                 this.textToDisplay = " "
                             } else {
+                                this.textToDisplay=" You don't have any pokemon "
+                                
                                 return true
                             }
                         }

@@ -8,7 +8,7 @@ canvas.height = window.innerHeight
 // grad.addColorStop(0.42, "#0F7855");
 // grad.addColorStop(0.76, "#418751");
 // grad.addColorStop(1, "#278033");
-
+localStorage.removeItem("pokemon")
 localStorage.setItem("pokemon", JSON.stringify([]))
 let pokemon = JSON.parse(localStorage.getItem("pokemon"))
 
@@ -32,8 +32,8 @@ function handleBattle() {
         map = "battle"
         draw()
         textBox.draw()
-        textBox.instruction=" "
-        textBox.inBattle=true
+        textBox.instruction = " "
+        textBox.inBattle = true
 
     }
 }
@@ -63,16 +63,12 @@ async function handleEnterPressed() {
             if (pokemon.length == 1) {
                 console.log("test runn");
                 player.isAllowedInGrass = true
-                if (!pokemon[0]) {
-                    textBox.instruction = "You got " + pokemon[0].pokemon["name"]
 
-                }
             }
             player.ballSelecting = false
         })
         // console.log(selectedPokemon)
         // console.log("ball selected ",textBox.instruction);
-
     }
 }
 function draw() {
@@ -127,16 +123,18 @@ async function gameLoop() {
     context.fillRect(0, 0, canvas.width, canvas.height)
     draw()
     textBox.draw()
-
-
-
-
     textBox.text = player.textToDisplay
+
     if (textBox.text === "OAK") {
         textBox.instruction = "Press Enter to Enter the House "
     }
+
+    if (textBox.text === " You don't have any pokemon ") {
+        textBox.instruction = "Get one from Prof oak"
+    }
+
     if (player.inGrass) {
-       
+
         if (!encounteredInCurrentGrass) {
             rivalPokemonXpos = Math.floor(Math.random() * (player.inGrass.width + 1)) + player.inGrass.xpos
             // console.log(rivalPokemonXpos, rivalPokemonXpos % 10);
@@ -148,11 +146,16 @@ async function gameLoop() {
             handleBattle();
         }
     }
-    if (player.enterPressed) {
 
+    if (pokemon[0] != null && pokemon.length > 0 && player.mapin == "OAK") {
+        textBox.text = "You got " + pokemon[0].pokemon["name"]
+    }
+
+    if (player.enterPressed) {
         handleEnterPressed();
     }
-    if (player.mapin == "OAK" && player.collidingTable) {
+
+    if (player.mapin == "OAK" && player.collidingTable && !player.isAllowedInGrass) {
         for (let i = 0; i < 3; i++) {
             if (player.xpos > getOakMap()["balls"][i].xpos - getOakMap()["balls"][i].radius &&
                 (i < 2 ? player.xpos + player.width < getOakMap()["balls"][i + 1].xpos - getOakMap()["balls"][i + 1].radius : player.xpos < getOakMap()["tables"][0].xpos + getOakMap()["tables"][0].width)) {
