@@ -8,9 +8,11 @@ class TextBox {
         this.context = context
         this.instruction = " "
         this.inBattle = false
+        this.mapin="battle"
         document.addEventListener('keydown', this.handlekeypressed.bind(this));
         this.selectedBattleOption = null
         this.selectedMove = null
+        this.battledone = false
         this.showBattleOptions = true
         this.cornerp = {
             left1: this.xpos + 15,
@@ -65,7 +67,7 @@ class TextBox {
 
 
         }
-this.moves =null
+        this.moves = null
         this.cursor = {
             x: this.showBattleOptions ? this.cornerp.left2 - 15 : this.cornerp.left1 - 15,
             y: this.options.battleOptions[0].ypos
@@ -73,11 +75,18 @@ this.moves =null
 
     }
     loadMoves() {
-        this.moves=getMoves(JSON.parse(localStorage.getItem("pokemon"))[0].pokemonData.moves, JSON.parse(localStorage.getItem("pokemon"))[0].playerData.level)
-        // console.log(moves);
+        this.moves = getMoves(JSON.parse(localStorage.getItem("pokemon"))[0].pokemonData.moves, JSON.parse(localStorage.getItem("pokemon"))[0].playerData.level)
+        console.log(this.moves);
         this.options.fightOptions.forEach((fightOption, index) => {
-            fightOption.option = this.moves[index].move.name || "Tacle";
-          });
+            if (this.moves.length > index) {
+
+                fightOption.option = this.moves[index].move.name;
+            }
+            else {
+                fightOption.option = ".....";
+
+            }
+        });
     }
     draw() {
 
@@ -88,7 +97,7 @@ this.moves =null
         this.context.font = "22px serif"
         this.context.fillText(this.text, this.xpos + 20, this.ypos + 28)
         this.context.fillText(this.instruction, this.xpos + 20, this.ypos + this.height - 20)
-        if (this.inBattle) {
+        if (this.inBattle&&!this.battledone ) {
             this.loadMoves()
 
             const options = this.showBattleOptions ? this.options.battleOptions : this.options.fightOptions
@@ -96,6 +105,9 @@ this.moves =null
             // this.cursor.x = this.selectedOption ? this.xpos + 20 : this.cornerp.left - 15;
             this.context.fillText(">", this.cursor.x, this.cursor.y);
             options.map(option => this.context.fillText(option.option, option.xpos, option.ypos));
+        }
+        if (this.inBattle&&this.battledone) {
+            this.context.fillText(">", this.xpos + 10, this.ypos + 28);
         }
     }
 
@@ -134,20 +146,31 @@ this.moves =null
                 break;
             case 'Enter':
                 console.log(this.cursor.x, this.cursor.y, this.xpos);
-                if (this.showBattleOptions) {
+                if (!this.battledone) {
 
-                    this.selectedBattleOption = this.options.battleOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
-                    console.log(this.selectedBattleOption);
-                    this.showBattleOptions = false
+                    if (this.showBattleOptions) {
+                        this.selectedBattleOption = this.options.battleOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
+                        console.log(this.selectedBattleOption);
+                        this.showBattleOptions = false
+                    }
+                    else {
+                        let smove = this.options.fightOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
+                        console.log(smove);
+                        if (smove.option != ".....") {
+                            this.selectedMove = this.moves.find(move => move.move.name === smove.option)
+                            console.log(this.selectedMove);
+                        }
+                    }
+                    // console.log(option.xpos - 15, this.cursor.x, option.ypos, this.cursor.y);
+                    this.cursor.x = this.showBattleOptions ? this.cornerp.left2 - 15 : this.cornerp.left1 - 15
+                    this.inBattle = true
+
+                } else {
+                    console.log("battle ended ");
+                    this.inBattle = false
+                    this.mapin="initial"
+                    
                 }
-                else {
-                    let smove = this.options.fightOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
-                    console.log(smove);
-                    this.selectedMove=this.moves.find(move=> move.move.name===smove.option)
-                    console.log(this.selectedMove);
-                }
-                // console.log(option.xpos - 15, this.cursor.x, option.ypos, this.cursor.y);
-                this.cursor.x = this.showBattleOptions ? this.cornerp.left2 - 15 : this.cornerp.left1 - 15
                 break
             default:
                 break;

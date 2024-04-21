@@ -15,7 +15,7 @@ class Healthbar {
 
     }
     loadData(){
-        this.pokemonName =this.isMine
+        this.pokemonName=this.isMine
         ? JSON.parse(localStorage.getItem("pokemon"))[0].pokemonName.pokemon.name
         : JSON.parse(localStorage.getItem("rivalPokemon")).rivalPokemon.pokemon.name
         this.hp =this.isMine
@@ -43,7 +43,6 @@ class Healthbar {
         context.fillStyle = "black"
         context.lineWidth = 1
         context.strokeRect(this.xpos + 50, this.ypos + 40, this.totalbarwidth, 6)
-
         let hpfill = (this.hp / this.maxhp) * this.totalbarwidth
         context.fillRect(this.xpos + 50, this.ypos + 40, hpfill, 6)
         let hpstring = (this.hp).toString() + "/" + this.maxhp.toString()

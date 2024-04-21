@@ -3,21 +3,8 @@ const getRandomPokemon = async () => {
     const pokemons = await getPokemons("grass")
 
 
-    let pokemonName = getslot(pokemons, 1);
-    console.log(pokemonName.pokemon.url);
-    let pokemonData = await getPokemonData(pokemonName.pokemon["url"])
-    console.log(pokemonData);
-    let pokemon = {
-        pokemonName: pokemonName,
-        pokemonData: pokemonData,
-        playerData: {
-            level: 1,
-            currenthp: 35,
-            maxhp: 35,
-            exp: 64,
-            expNextlvl: 100
-        }
-    }
+    let pokemon = await getslot(pokemons, 1, true);
+
     // console.log(localStorage.getItem("pokemon"))
     if (JSON.parse(localStorage.getItem("pokemon")).length == 0) {
         console.log("empty storage");
@@ -28,17 +15,48 @@ const getRandomPokemon = async () => {
     }
     // console.log(pokemon)
 }
-const getslot = (pokemons, slot) => {
+const getslot = async (pokemons, slot, isMine) => {
     const max = pokemons.length
     const min = 0
     let random = Math.floor(Math.random() * (max - min) + min)
     let not_slot = slot == 1 ? 2 : 1
-    if (pokemons[random].slot == not_slot) {
-        getslot(pokemons, slot)
+    let pokemonData = await getPokemonData(pokemons[random].pokemon.url)
+    console.log(pokemonData);
+
+
+    let showdownImagef = pokemonData.sprites.other.showdown.front_default
+    let showdownImageb = pokemonData.sprites.other.showdown.back_default
+    if (pokemons[random].slot == not_slot && showdownImagef == null && showdownImageb == null) {
+        await getslot(pokemons, slot)
+    }
+    let pokemon;
+    if (isMine) {
+
+        pokemon = {
+            pokemonName: pokemons[random],
+            pokemonData: pokemonData,
+            playerData: {
+                level: 1,
+                currenthp: 35,
+                maxhp: 35,
+                exp: 64,
+                expNextlvl: 100
+            }
+        }
     }
     else {
-        return pokemons[random]
+        pokemon = {
+            rivalPokemon: pokemons[random],
+            rivalPokemonData: pokemonData,
+            rivalData: {
+                level: 1, //Math.floor(Math.random() * (level_p+1 - (level_p-1)) + level_p-1),
+                hp: 35,
+                maxhp: 35,
+            }
+        }
     }
+    return pokemon
+
 }
 
 const getPokemonData = async (url) => {
@@ -53,19 +71,19 @@ const generateRivalPok = async () => {
     let player_pokemon = JSON.parse(localStorage.getItem("pokemon"))
     let slot_p = player_pokemon[0].pokemonName.slot
     let level_p = player_pokemon[0].playerData.level  //later I wll gchange it to max level pokemon the player has 
-    let rivalPokemon = getslot(pokemons, slot_p)
-    console.log(slot_p, rivalPokemon.pokemon);
-    let rivalPokemonData = await getPokemonData(rivalPokemon.pokemon["url"])
-    let rivalPokemonObj = {
-        rivalPokemon: rivalPokemon,
-        rivalPokemonData: rivalPokemonData,
-        rivalData: {
-            level: 1, //Math.floor(Math.random() * (level_p+1 - (level_p-1)) + level_p-1),
-            hp: 35,
-            maxhp: 35,
-        }
-    }
-    localStorage.setItem("rivalPokemon", JSON.stringify(rivalPokemonObj))
+    let rivalPokemon = await getslot(pokemons, slot_p, false)
+    // console.log(slot_p, rivalPokemon.pokemon);
+    // let rivalPokemonData = await getPokemonData(rivalPokemon.pokemon["url"])
+    // let rivalPokemonObj = {
+    //     rivalPokemon: rivalPokemon,
+    //     rivalPokemonData: rivalPokemonData,
+    //     rivalData: {
+    //         level: 1, //Math.floor(Math.random() * (level_p+1 - (level_p-1)) + level_p-1),
+    //         hp: 35,
+    //         maxhp: 35,
+    //     }
+    // }
+    localStorage.setItem("rivalPokemon", JSON.stringify(rivalPokemon))
 
     // }
 }
@@ -76,11 +94,13 @@ const getPokemons = async (type) => {
 }
 const getMoves = (moves, level) => {
     // console.log("function called",moves);
-    return moves.filter(moveobj => {
+    let movesObj = moves.filter(moveobj => {
         return moveobj.version_group_details.some(detail =>
             detail.level_learned_at === level
         );
     }).map(moves => ({ move: moves.move }));
+
+    return movesObj
 }
 const getMove = async (url) => {
     const response = await fetch(url)
