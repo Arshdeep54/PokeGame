@@ -20,7 +20,7 @@ class GrassField {
         const grassImage=this.grass
             if(grassImage.complete){
 
-                // console.log("image loaded",this.grass);
+                // //console.log("image loaded",this.grass);
                 for (let i = 0; i < this.y; i++) {
                     let y = this.ypos + i * 12
                     for (let j = 0; j < this.x; j++) {
@@ -38,7 +38,7 @@ class GrassField {
         // let grass=new Image()
         // grass.src = "./assets/images/grass.png"
         // grass.onload = () => {
-        //     console.log("loading image");
+        //     //console.log("loading image");
         //     context.drawImage(grass, this.xpos, this.ypos)
         //     for (let i = 0; i < this.y; i++) {
         //         let y = this.ypos + i * this.heightG

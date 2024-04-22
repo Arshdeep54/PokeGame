@@ -5,15 +5,15 @@ const getRandomPokemon = async () => {
 
     let pokemon = await getslot(pokemons, 1, true);
 
-    // console.log(localStorage.getItem("pokemon"))
+    // //console.log(localStorage.getItem("pokemon"))
     if (JSON.parse(localStorage.getItem("pokemon")).length == 0) {
-        console.log("empty storage");
+        //console.log("empty storage");
         let pokemonArray = [pokemon]
         localStorage.setItem("pokemon", JSON.stringify(pokemonArray))
-        console.log(JSON.parse(localStorage.getItem("pokemon")), "updated ")
+        //console.log(JSON.parse(localStorage.getItem("pokemon")), "updated ")
 
     }
-    // console.log(pokemon)
+    // //console.log(pokemon)
 }
 const getslot = async (pokemons, slot, isMine) => {
     const max = pokemons.length
@@ -21,25 +21,25 @@ const getslot = async (pokemons, slot, isMine) => {
     let random = Math.floor(Math.random() * (max - min) + min)
     let not_slot = slot == 1 ? 2 : 1
     let pokemonData = await getPokemonData(pokemons[random].pokemon.url)
-    console.log(pokemonData);
+    //console.log(pokemonData);
 
 
     let showdownImagef = pokemonData.sprites.other.showdown.front_default
     let showdownImageb = pokemonData.sprites.other.showdown.back_default
-    console.log(showdownImageb, showdownImagef);
+    //console.log(showdownImageb, showdownImagef);
     // let moves =getMoves(pokemonData.moves,1)
     // if(moves.length==0){
     //     await getslot(pokemons, slot)
     // }
     // moves.forEach(async move => {
     //     moveData=await getMove(move.move.url)
-    //     console.log(moveData);
+    //     //console.log(moveData);
     //     // if(moveData.stat_changes.length==0){
     //     //     await getslot(pokemons, slot)
     //     // }
     // });
     if (pokemons[random].slot == not_slot || (showdownImagef == null && showdownImageb == null)) {
-        console.log("somethings missing ");
+        //console.log("somethings missing ");
         await getslot(pokemons, slot)
 
     }
@@ -86,7 +86,7 @@ const generateRivalPok = async () => {
     let slot_p = player_pokemon[0].pokemonName.slot
     let level_p = player_pokemon[0].playerData.level  //later I wll gchange it to max level pokemon the player has 
     let rivalPokemon = await getslot(pokemons, slot_p, false)
-    // console.log(slot_p, rivalPokemon.pokemon);
+    // //console.log(slot_p, rivalPokemon.pokemon);
     // let rivalPokemonData = await getPokemonData(rivalPokemon.pokemon["url"])
     // let rivalPokemonObj = {
     //     rivalPokemon: rivalPokemon,
@@ -107,7 +107,7 @@ const getPokemons = async (type) => {
     return data.pokemon
 }
 // const getMoves = (moves, level) => {
-//     // console.log("function called",moves);
+//     // //console.log("function called",moves);
 //     let movesObj = moves.filter(moveobj => {
 //         return moveobj.version_group_details.some(detail =>
 //             detail.level_learned_at === level
@@ -115,7 +115,7 @@ const getPokemons = async (type) => {
 //     }).map(moves => ({ move: moves.move }));
 //     let movesObjf = []
 //     movesObj.forEach(async move => {
-//         console.log(move.move.url);
+//         //console.log(move.move.url);
 //         let moveData = await getMove(move.move.url)
 //         if (moveData.stat_changes.length > 0) {
 //             moveData.stat_changes.forEach(stat_change => {

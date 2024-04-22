@@ -8,13 +8,14 @@ class Player {
         this.speed = 5;
         this.lastMove = 'front';
         this.ctx = ctx
-        this.isAllowedInGrass = (JSON.parse(localStorage.getItem("pokemon")).length ==1)
+        this.isAllowedInGrass = (JSON.parse(localStorage.getItem("pokemon")).length == 1)
         // this.isAllowedInGrass = true
         this.inGrass = null
         this.entered = null
         this.enterPressed = false
         this.mapin = "initial"
         this.collidingTable = false
+        this.healingTable = false
         this.textToDisplay = textToDisplay
         this.ballSelecting = false
         this.isListening = true;
@@ -57,10 +58,10 @@ class Player {
         }
 
     }
-   
+
 
     getDirection() {
-        // console.log("getdirection called", this.lastMove)
+        // //console.log("getdirection called", this.lastMove)
         return this.lastMove
     }
     handleKeyDown(event) {
@@ -80,14 +81,31 @@ class Player {
                 break;
             case 'ArrowDown':
                 this.lastMove = 'front';
-                console.log("front")
+                //console.log("front")
                 this.moveDown();
                 break;
             case 'Enter':
-                if (this.textToDisplay == "OAK" ||this.textToDisplay=="Center") {
+                if (this.textToDisplay == "OAK" || this.textToDisplay == "Center" || this.textToDisplay == "Mart"|| this.textToDisplay=="House") {
                     this.enterPressed = true
-                } else if (this.textToDisplay == "table") {
+                    this.xpos = canvas.width / 2
+                    this.ypos=getMap()[1].ypos+20
+
+                } else if (this.textToDisplay == "table" && this.mapin == "OAK") {
                     this.ballSelecting = true
+
+                } else if (this.textToDisplay == "table" && this.mapin == "Center") {
+                    this.healingTable = true
+                    let pokemons = JSON.parse(localStorage.getItem("pokemon"))
+                    let newPokemonArray = [];
+                    for (const pokemon of pokemons) {
+                        pokemon.playerData.currenthp = pokemon.playerData.maxhp;
+                        newPokemonArray.push(pokemon);
+                    }
+                    localStorage.setItem("pokemon", JSON.stringify(newPokemonArray))
+                    //console.log(
+                        // newPokemonArray
+                    // );
+
                 }
                 break;
             default:
@@ -98,14 +116,18 @@ class Player {
     }
     moveLeft() {
         this.xpos -= this.speed;
+        //console.log("leftttt")
         if (this.handleCollisions()) {
+            //console.log("leftttttttttttttttttttttt")
             this.xpos += this.speed;
         }
     }
 
     moveRight() {
         this.xpos += this.speed;
+        //console.log("rigthtt")
         if (this.handleCollisions()) {
+            //console.log("rigthttttttttttttttttttttttt")
             this.xpos -= this.speed;
         }
     }
@@ -130,11 +152,11 @@ class Player {
 
             const map = getMap(); // Replace with your map data structure
             for (const buildingType in map) {
-                // console.log(buildingType)
+                // //console.log(buildingType)
                 if (buildingType != "grasses" && buildingType != "roads") {
                     for (const building of map[buildingType]) {
                         if (this.collidesWith(building)) {
-                            // console.log("collided with " + building)
+                            // //console.log("collided with " + building)
                             this.textToDisplay = building.text
                             return true
 
@@ -147,15 +169,15 @@ class Player {
                 else if (buildingType === "grasses") {
                     for (const building of map[buildingType]) {
                         if (this.collidesWith(building)) {
-                            // console.log(this.isAllowedInGrass, "allowed",JSON.parse(localStorage.getItem("pokemon")));
+                            // //console.log(this.isAllowedInGrass, "allowed",JSON.parse(localStorage.getItem("pokemon")));
                             // this.isAllowedInGrass=(localStorage.getItem("pokemon").length ==1)
                             if (this.isAllowedInGrass) {
-                                // console.log(building)
+                                // //console.log(building)
                                 this.inGrass = building
                                 this.textToDisplay = " "
                             } else {
-                                this.textToDisplay=" You don't have any pokemon "
-                                
+                                this.textToDisplay = " You don't have any pokemon "
+
                                 return true
                             }
                         }
@@ -177,14 +199,14 @@ class Player {
                         if (building.text == "OAK") {
 
                             if (this.collidesFromInside(building)) {
-                                // console.log(building);
-                                // console.log("collided with " + building)
+                                // //console.log(building);
+                                // //console.log("collided with " + building)
                                 this.textToDisplay = building.text
                                 return true
 
                             } else {
                                 this.textToDisplay = " "
-                                // console.log("not colliding")
+                                // //console.log("not colliding")
 
                             }
                         } else {
@@ -195,7 +217,7 @@ class Player {
                                     this.xpos = getMap()["buildings"][1].xpos - this.width
 
                                 }
-                                // console.log("collided with " + building)
+                                // //console.log("collided with " + building)
                                 this.textToDisplay = building.text
                                 return true
 
@@ -208,12 +230,12 @@ class Player {
                     }
                 } else {
                     for (const building of oakmap[buildingType]) {
-                        // console.log(building)
+                        // //console.log(building)
                         if (this.collidesWith(building)) {
                             if (building.text == "table") {
                                 this.collidingTable = true
                             }
-                            // console.log("collided with " + building)
+                            // //console.log("collided with " + building)
                             this.textToDisplay = building.text
                             return true
 
@@ -221,6 +243,143 @@ class Player {
                             this.collidingTable = false
                             this.textToDisplay = " "
 
+                        }
+                    }
+                }
+            }
+        } else if (this.mapin == "Center") {
+            //console.log("in center ");
+            const centerMap = getCenterMap()
+
+            for (const buildingType in centerMap) {
+                if (buildingType == "rectangles") {
+
+                    for (const building of centerMap[buildingType]) {
+                        if (building.text == "Center") {
+
+                            if (this.collidesFromInside(building)) {
+                                //console.log(building);
+                                // //console.log("collided with " + building)
+                                this.textToDisplay = building.text
+                                return true
+
+                            } else {
+                                this.textToDisplay = " "
+                                //console.log("not colliding 222")
+                            }
+                        } else {
+                            if (this.collidesWith(building)) {
+                                // if (building.text == "door") {
+                                this.enterPressed = false
+                                this.mapin = "initial"
+                                this.xpos = getMap()["buildings"][3].xpos - this.width
+                                // }
+                                // //console.log("collided with " + building)
+                                this.textToDisplay = building.text
+                                return true
+
+                            } else {
+                                this.textToDisplay = " "
+                                //console.log("not colliding")
+
+                            }
+                        }
+                    }
+                } else {
+                    for (const building of centerMap[buildingType]) {
+                        // //console.log(building)
+                        if (this.collidesWith(building)) {
+                            if (building.text == "table") {
+                                this.healingTable = true
+                            }
+                            // //console.log("collided with " + building)
+                            this.textToDisplay = building.text
+                            return true
+
+                        } else {
+                            this.healingTable = false
+                            this.textToDisplay = " "
+
+                        }
+                    }
+                }
+            }
+        } else if (this.mapin == "Mart") {
+            //console.log("in Mart ");
+            const martMap = getMartMap()
+
+            for (const buildingType in martMap) {
+                if (buildingType == "rectangles") {
+
+                    for (const building of martMap[buildingType]) {
+                        if (building.text == "Mart") {
+
+                            if (this.collidesFromInside(building)) {
+                                //console.log(building);
+                                // //console.log("collided with " + building)
+                                this.textToDisplay = building.text
+                                return true
+
+                            } else {
+                                this.textToDisplay = " "
+                                //console.log("not colliding 222")
+                            }
+                        } else {
+                            if (this.collidesWith(building)) {
+                                // if (building.text == "door") {
+                                this.enterPressed = false
+                                this.mapin = "initial"
+                                this.xpos = getMap()["buildings"][2].xpos - this.width
+                                // }
+                                // //console.log("collided with " + building)
+                                this.textToDisplay = building.text
+                                return true
+
+                            } else {
+                                this.textToDisplay = " "
+                                //console.log("not colliding")
+
+                            }
+                        }
+                    }
+                }
+            }
+        }else if (this.mapin == "House") {
+            //console.log("in House ");
+            const houseMap = getHouseMap()
+
+            for (const buildingType in houseMap) {
+                if (buildingType == "rectangles") {
+
+                    for (const building of houseMap[buildingType]) {
+                        if (building.text == "House") {
+
+                            if (this.collidesFromInside(building)) {
+                                //console.log(building);
+                                // //console.log("collided with " + building)
+                                this.textToDisplay = building.text
+                                return true
+
+                            } else {
+                                this.textToDisplay = " "
+                                //console.log("not colliding 222")
+                            }
+                        } else {
+                            if (this.collidesWith(building)) {
+                                // if (building.text == "door") {
+                                this.enterPressed = false
+                                this.mapin = "initial"
+                                this.xpos = getMap()["buildings"][0].xpos - this.width
+                                // }
+                                // //console.log("collided with " + building)
+                                this.textToDisplay = building.text
+                                return true
+
+                            } else {
+                                this.textToDisplay = " "
+                                //console.log("not colliding")
+
+                            }
                         }
                     }
                 }

@@ -21,7 +21,7 @@ class TreeField {
         const treeImage=this.tree
             if(treeImage.complete){
 
-                // console.log("image loaded",this.tree);
+                // //console.log("image loaded",this.tree);
                 for (let i = 0; i < this.y; i++) {
                     let y = this.ypos + i * 32
                     for (let j = 0; j < this.x; j++) {
@@ -39,7 +39,7 @@ class TreeField {
         // let tree=new Image()
         // tree.src = "./assets/images/tree.png"
         // tree.onload = () => {
-        //     console.log("loading image");
+        //     //console.log("loading image");
         //     context.drawImage(tree, this.xpos, this.ypos)
         //     for (let i = 0; i < this.y; i++) {
         //         let y = this.ypos + i * this.heightG
