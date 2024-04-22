@@ -26,8 +26,22 @@ const getslot = async (pokemons, slot, isMine) => {
 
     let showdownImagef = pokemonData.sprites.other.showdown.front_default
     let showdownImageb = pokemonData.sprites.other.showdown.back_default
-    if (pokemons[random].slot == not_slot && showdownImagef == null && showdownImageb == null) {
+    console.log(showdownImageb, showdownImagef);
+    // let moves =getMoves(pokemonData.moves,1)
+    // if(moves.length==0){
+    //     await getslot(pokemons, slot)
+    // }
+    // moves.forEach(async move => {
+    //     moveData=await getMove(move.move.url)
+    //     console.log(moveData);
+    //     // if(moveData.stat_changes.length==0){
+    //     //     await getslot(pokemons, slot)
+    //     // }
+    // });
+    if (pokemons[random].slot == not_slot || (showdownImagef == null && showdownImageb == null)) {
+        console.log("somethings missing ");
         await getslot(pokemons, slot)
+
     }
     let pokemon;
     if (isMine) {
@@ -92,16 +106,50 @@ const getPokemons = async (type) => {
     const data = await response.json()
     return data.pokemon
 }
-const getMoves = (moves, level) => {
-    // console.log("function called",moves);
-    let movesObj = moves.filter(moveobj => {
-        return moveobj.version_group_details.some(detail =>
-            detail.level_learned_at === level
-        );
-    }).map(moves => ({ move: moves.move }));
-
-    return movesObj
-}
+// const getMoves = (moves, level) => {
+//     // console.log("function called",moves);
+//     let movesObj = moves.filter(moveobj => {
+//         return moveobj.version_group_details.some(detail =>
+//             detail.level_learned_at === level
+//         );
+//     }).map(moves => ({ move: moves.move }));
+//     let movesObjf = []
+//     movesObj.forEach(async move => {
+//         console.log(move.move.url);
+//         let moveData = await getMove(move.move.url)
+//         if (moveData.stat_changes.length > 0) {
+//             moveData.stat_changes.forEach(stat_change => {
+//                 if (stat_change.stat.name == "attack" || stat_change.stat.name == "defence") {
+//                     let moveObj = {
+//                         move: move.move.name,
+//                         url: move.move.url,
+//                         change: stat_change.stat.name == "attack" ? stat_change.change : stat_change.change * (-1)
+//                     }
+//                     movesObjf.push(moveObj)
+//                 }
+//             })
+//         }
+//     });
+//     return movesObj
+// }
+async function getMoves(moves, level) {
+    const filteredMoves = moves.filter(moveobj =>
+      moveobj.version_group_details.some(detail => detail.level_learned_at === level)
+    );
+  
+    const moveDataPromises = filteredMoves.map(move =>
+      fetch(move.move.url).then(response => response.json())
+    );
+    const moveData = await Promise.all(moveDataPromises);
+  
+    return moveData.map(data => ({
+      move: data.name,
+      url: data.url,
+      change: data.stat_changes?.find(change => change.stat.name === "attack")?.change ||
+              (data.stat_changes?.find(change => change.stat.name === "defense")?.change * -1) ||
+              0,
+    }));
+  }
 const getMove = async (url) => {
     const response = await fetch(url)
     const data = await response.json()

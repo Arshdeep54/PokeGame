@@ -84,7 +84,7 @@ class Player {
                 this.moveDown();
                 break;
             case 'Enter':
-                if (this.textToDisplay == "OAK") {
+                if (this.textToDisplay == "OAK" ||this.textToDisplay=="Center") {
                     this.enterPressed = true
                 } else if (this.textToDisplay == "table") {
                     this.ballSelecting = true

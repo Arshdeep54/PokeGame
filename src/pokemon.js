@@ -10,6 +10,7 @@ class Pokemon {
     draw(context) {
         let pokemonImage=JSON.parse(localStorage.getItem("pokemon"))[0].pokemonData.sprites.other.showdown.back_default 
         let rivalPokemonImage=JSON.parse(localStorage.getItem("rivalPokemon")).rivalPokemonData.sprites.other.showdown.front_default
+
         this.image.src = this.isMine?pokemonImage:rivalPokemonImage
         const pokImage = this.image
 

@@ -10,25 +10,28 @@ class Healthbar {
         this.isMine = isMine
         this.width = width
         this.height = height
-        this.pokemonName =" "
+        this.pokemonName = " "
         this.totalbarwidth = 190
 
     }
-    loadData(){
-        this.pokemonName=this.isMine
-        ? JSON.parse(localStorage.getItem("pokemon"))[0].pokemonName.pokemon.name
-        : JSON.parse(localStorage.getItem("rivalPokemon")).rivalPokemon.pokemon.name
-        this.hp =this.isMine
-        ? JSON.parse(localStorage.getItem("pokemon"))[0].playerData.currenthp
-        : JSON.parse(localStorage.getItem("rivalPokemon")).rivalData.hp
+    loadData() {
+
+        this.pokemonName = this.isMine
+            ? JSON.parse(localStorage.getItem("pokemon"))[0].pokemonName.pokemon.name
+            : JSON.parse(localStorage.getItem("rivalPokemon"))?.rivalPokemon.pokemon.name
+        this.hp = this.isMine
+            ? JSON.parse(localStorage.getItem("pokemon"))[0].playerData.currenthp
+            : JSON.parse(localStorage.getItem("rivalPokemon")).rivalData.hp
         this.maxhp = this.isMine
-        ? JSON.parse(localStorage.getItem("pokemon"))[0].playerData.maxhp
-        : JSON.parse(localStorage.getItem("rivalPokemon")).rivalData.maxhp
+            ? JSON.parse(localStorage.getItem("pokemon"))[0].playerData.maxhp
+            : JSON.parse(localStorage.getItem("rivalPokemon")).rivalData.maxhp
         this.level = this.isMine
-        ? JSON.parse(localStorage.getItem("pokemon"))[0].playerData.level
-        : JSON.parse(localStorage.getItem("rivalPokemon")).rivalData.level
+            ? JSON.parse(localStorage.getItem("pokemon"))[0].playerData.level
+            : JSON.parse(localStorage.getItem("rivalPokemon")).rivalData.level
         this.exp = JSON.parse(localStorage.getItem("pokemon"))[0].playerData.exp
         this.expforNextlevel = JSON.parse(localStorage.getItem("pokemon"))[0].playerData.expNextlvl
+        this.hp = this.hp < 0 ? 0 : this.hp
+
     }
     draw(context) {
         this.loadData()
@@ -36,7 +39,6 @@ class Healthbar {
         context.fillRect(this.xpos, this.ypos, this.width, this.height)
         context.fillStyle = "black"
         context.font = "16px serif"
-        
         context.fillText(this.pokemonName, this.xpos + 20, this.ypos + 20)
         context.fillText("lvl " + this.level.toString(), this.xpos + this.width - 50, this.ypos + 20)
         context.fillText("HP ", this.xpos + 20, this.ypos + 50)
@@ -45,7 +47,7 @@ class Healthbar {
         context.strokeRect(this.xpos + 50, this.ypos + 40, this.totalbarwidth, 6)
         let hpfill = (this.hp / this.maxhp) * this.totalbarwidth
         context.fillRect(this.xpos + 50, this.ypos + 40, hpfill, 6)
-        let hpstring = (this.hp).toString() + "/" + this.maxhp.toString()
+        let hpstring = (this.hp)?.toString() + "/" + this.maxhp.toString()
         context.fillText(hpstring, this.xpos + this.width - 60, this.ypos + 65)
         if (this.isMine) {
             context.fillText("XP ", this.xpos + 20, this.ypos + 90)

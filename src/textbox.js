@@ -8,7 +8,9 @@ class TextBox {
         this.context = context
         this.instruction = " "
         this.inBattle = false
-        this.mapin="battle"
+        this.mapin = "battle"
+        this.movedone = false
+        this.chosenText = " "
         document.addEventListener('keydown', this.handlekeypressed.bind(this));
         this.selectedBattleOption = null
         this.selectedMove = null
@@ -74,13 +76,13 @@ class TextBox {
         }
 
     }
-    loadMoves() {
-        this.moves = getMoves(JSON.parse(localStorage.getItem("pokemon"))[0].pokemonData.moves, JSON.parse(localStorage.getItem("pokemon"))[0].playerData.level)
-        console.log(this.moves);
+    async loadMoves() {
+        this.moves = await getMoves(JSON.parse(localStorage.getItem("pokemon"))[0].pokemonData.moves, JSON.parse(localStorage.getItem("pokemon"))[0].playerData.level)
+        // console.log(this.moves);
         this.options.fightOptions.forEach((fightOption, index) => {
             if (this.moves.length > index) {
 
-                fightOption.option = this.moves[index].move.name;
+                fightOption.option = this.moves[index].move;
             }
             else {
                 fightOption.option = ".....";
@@ -97,7 +99,7 @@ class TextBox {
         this.context.font = "22px serif"
         this.context.fillText(this.text, this.xpos + 20, this.ypos + 28)
         this.context.fillText(this.instruction, this.xpos + 20, this.ypos + this.height - 20)
-        if (this.inBattle&&!this.battledone ) {
+        if (this.inBattle && !this.battledone) {
             this.loadMoves()
 
             const options = this.showBattleOptions ? this.options.battleOptions : this.options.fightOptions
@@ -106,8 +108,8 @@ class TextBox {
             this.context.fillText(">", this.cursor.x, this.cursor.y);
             options.map(option => this.context.fillText(option.option, option.xpos, option.ypos));
         }
-        if (this.inBattle&&this.battledone) {
-            this.context.fillText(">", this.xpos + 10, this.ypos + 28);
+        if (this.inBattle && this.movedone) {
+            this.context.fillText(this.chosenText, this.xpos + 20, this.ypos + 28)
         }
     }
 
@@ -148,7 +150,7 @@ class TextBox {
                 console.log(this.cursor.x, this.cursor.y, this.xpos);
                 if (!this.battledone) {
 
-                    if (this.showBattleOptions) {
+                    if (this.showBattleOptions && !this.movedone) {
                         this.selectedBattleOption = this.options.battleOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
                         console.log(this.selectedBattleOption);
                         this.showBattleOptions = false
@@ -157,10 +159,15 @@ class TextBox {
                         let smove = this.options.fightOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
                         console.log(smove);
                         if (smove.option != ".....") {
-                            this.selectedMove = this.moves.find(move => move.move.name === smove.option)
+                            this.selectedMove = this.moves.find(move => move.move === smove.option)
+                            this.chosenText = "You chose " + this.selectedMove.move
+                            this.showBattleOptions = true
+                            this.movedone = true
                             console.log(this.selectedMove);
+
                         }
                     }
+
                     // console.log(option.xpos - 15, this.cursor.x, option.ypos, this.cursor.y);
                     this.cursor.x = this.showBattleOptions ? this.cornerp.left2 - 15 : this.cornerp.left1 - 15
                     this.inBattle = true
@@ -168,8 +175,8 @@ class TextBox {
                 } else {
                     console.log("battle ended ");
                     this.inBattle = false
-                    this.mapin="initial"
-                    
+                    this.mapin = "initial"
+
                 }
                 break
             default:

@@ -37,45 +37,117 @@ async function handleBattle() {
         draw()
         textBox.draw()
         textBox.instruction = " "
-        textBox.inBattle=true
-        
+        textBox.inBattle = true
+
         if (textBox.selectedMove != null) {
-            let moveData = await getMove(textBox.selectedMove.move.url)
-            console.log(moveData.stat_changes);
-            let attack_change = moveData.stat_changes.length > 0 ? moveData.stat_changes.find(stat => stat.stat.name == "attack").change : 0
+
+            // let moveData = await getMove(textBox.selectedMove.move.url)
+            let attack_change = textBox.selectedMove.change
+            // console.log("player Stat",moveData.stat_changes);
+            // let attack_change = moveData.stat_changes.length > 0 ? moveData.stat_changes.find(stat => stat.stat.name == "attack")?.change : 0
+            console.log("position1", attack_change);
+            if (attack_change == null) { attack_change = 0 }
+            console.log("position2", attack_change);
             if (attack_change > 0) {
                 attack_change += 1
                 pokemon = JSON.parse(localStorage.getItem("pokemon"))
                 let level = pokemon[0].playerData.level
-                let hp = pokemon[0].playerData.hp
+                let hp = pokemon[0].playerData.currenthp
+                console.log("pokemon", hp);
                 if (hp > 0) {
                     pokemon[0].playerData.hp = pokemon[0].playerData.hp + (attack_change * level)
                     localStorage.setItem("pokemon", JSON.stringify(pokemon))
                     console.log(JSON.parse(localStorage.getItem("pokemon")));
+                    textBox.selectedMove = null
+                    console.log("attacks rival");
+                    await rivalAttacks()
                 } else {
-                    player.textToDisplay = "You lost"
-                    textBox.battledone=true
+                    player.textToDisplay = ">You lost"
+                    textBox.battledone = true
                 }
             } else {
                 attack_change -= 1
                 rivalPokemon = JSON.parse(localStorage.getItem("rivalPokemon"))
                 let level = rivalPokemon.rivalData.level
                 let hp = rivalPokemon.rivalData.hp
+                console.log("rrrpokemon", hp);
+
                 if (hp > 0) {
 
                     rivalPokemon.rivalData.hp = rivalPokemon.rivalData.hp + (attack_change * level)
                     localStorage.setItem("rivalPokemon", JSON.stringify(rivalPokemon))
                     console.log(JSON.parse(localStorage.getItem("rivalPokemon")));
-                } else {
-                    player.textToDisplay = "You won"
-                    textBox.battledone=true
+                    textBox.selectedMove = null
+                    console.log("attacks rival");
+
+                    await rivalAttacks()
+
+                } else if (hp <= 0) {
+                    player.textToDisplay = ">You won"
+                    textBox.battledone = true
                 }
             }
             console.log("attack", attack_change);
-            textBox.selectedMove = null
         }
 
     }
+}
+async function rivalAttacks() {
+    console.log("hiiiiiiiiii6");
+    let moveData;
+
+    let moves = await getMoves(JSON.parse(localStorage.getItem("rivalPokemon")).rivalPokemonData.moves, JSON.parse(localStorage.getItem("rivalPokemon")).rivalData.level)
+    let random = Math.floor(Math.random() * 3)
+    let randomMove = moves[random]
+    console.log(randomMove.move);
+    textBox.chosenText = "Your opp chose " + randomMove.move
+    textBox.showBattleOptions = true
+    textBox.movedone = true
+
+    console.log(randomMove.change);
+    let attack_change = randomMove.change
+    // let attack_change = moveData.stat_changes.length > 0 ? moveData.stat_changes.find(stat => stat.stat.name == "attack")?.change : 0
+    console.log("position3", attack_change);
+    if (attack_change == null || attack_change == undefined) { attack_change = 0 }
+    console.log("position4", attack_change);
+    if (attack_change > 0) {
+        attack_change += 1
+        rivalPokemon = JSON.parse(localStorage.getItem("rivalPokemon"))
+        let level = rivalPokemon.rivalData.level
+        let hp = rivalPokemon.rivalData.hp
+        console.log("rrrpokemon", hp);
+
+        if (hp > 0) {
+            rivalPokemon.rivalData.hp = rivalPokemon.rivalData.hp + (attack_change * level)
+            localStorage.setItem("rivalPokemon", JSON.stringify(rivalPokemon))
+            console.log(JSON.parse(localStorage.getItem("rivalPokemon")));
+
+        } else if (hp <= 0) {
+            player.textToDisplay = ">You Won"
+            textBox.battledone = true
+        }
+    } else {
+        attack_change -= 1
+        pokemon = JSON.parse(localStorage.getItem("pokemon"))
+        console.log(pokemon[0]);
+        let level = pokemon[0].playerData.level
+        let hp = pokemon[0].playerData.currenthp
+        console.log("pokemonnnn", hp);
+        if (hp > 0) {
+            pokemon[0].playerData.currenthp = pokemon[0].playerData.currenthp + (attack_change * level)
+            localStorage.setItem("pokemon", JSON.stringify(pokemon))
+            console.log(JSON.parse(localStorage.getItem("pokemon")));
+
+        } else if (hp <= 0) {
+            console.log("youlosttttt");
+            player.textToDisplay = ">You lost"
+            textBox.battledone = true
+        }
+    }
+
+    console.log("attack", attack_change);
+    // textBox.selectedMove = null
+
 }
 async function handleEnterPressed() {
     if (textBox.text === "OAK" || player.mapin == "OAK") {
@@ -94,6 +166,7 @@ async function handleEnterPressed() {
             textBox.instruction = " "
         }
     }
+
     if (textBox.text === "table" && player.ballSelecting) {
         await getRandomPokemon().then(res => {
 
@@ -109,6 +182,20 @@ async function handleEnterPressed() {
         })
         // console.log(selectedPokemon)
         // console.log("ball selected ",textBox.instruction);
+    }
+    if(textBox.text=="Center"||player.mapin=="Center"){
+        player.mapin = "Center"
+        context.fillStyle = "black"
+        context.fillRect(0, 0, canvas.width, canvas.height)
+        map = "Center"
+        draw()
+
+        player.draw()
+        textBox.draw()
+        
+        if (pokemon.length != 0) {
+            textBox.instruction = " "
+        }
     }
 }
 function draw() {
@@ -133,6 +220,13 @@ function draw() {
     if (map != "battle") {
         player.draw();
     }
+    // if (textBox.movedone) {
+    //     console.log("waiting");
+    //     setInterval(() => {
+    //         textBox.movedone = false
+    //     }, 1000)
+    // }
+
 }
 function init() {
     console.log("init");
@@ -167,6 +261,10 @@ async function gameLoop() {
     if (textBox.text === "OAK") {
         textBox.instruction = "Press Enter to Enter the House "
     }
+    if (textBox.text === "Center") {
+        textBox.instruction = "Press Enter to Enter the Center "
+    }
+
 
     if (textBox.text === " You don't have any pokemon ") {
         textBox.instruction = "Get one from Prof oak"
@@ -175,7 +273,8 @@ async function gameLoop() {
     if (player.inGrass) {
         if (!encounteredInCurrentGrass) {
             console.log(player.inGrass);
-            generateRivalPok();
+            textBox.battledone = false
+            await generateRivalPok();
             rivalPokemonXpos = Math.floor(Math.random() * (player.inGrass.width + 1)) + player.inGrass.xpos
             // console.log(rivalPokemonXpos, rivalPokemonXpos % 10);
             rivalPokemonXpos = rivalPokemonXpos - rivalPokemonXpos % 10
@@ -185,17 +284,27 @@ async function gameLoop() {
         if (player.xpos == rivalPokemonXpos) {
             handleBattle();
         }
-    }           
-    if(textBox.mapin==="initial"){
+    }
+    if (textBox.mapin === "initial") {
         console.log(player.inGrass);
         // player.inGrass=false
-        player.xpos=(player.inGrass["xpos"]+player.inGrass.width+5)
+        if (player.inGrass != null) {
 
-        player.inGrass=null
-        player.mapin="initial"
-        textBox.mapin="battle"
+            player.xpos = (player.inGrass["xpos"] + player.inGrass.width + 5)
+        }
+
+        textBox.mapin = "battle"
+        player.inGrass = null
+        player.mapin = "initial"
+        player.isListening = true
+        player.textToDisplay = " "
     }
-  
+    if (textBox.movedone) {
+        console.log("waiting");
+        // textBox.showBattleOptions=true
+        await new Promise(resolve => setTimeout(resolve, 1500)); // Pause for 1 second
+        textBox.movedone = false;
+    }
 
     if (pokemon[0] != null && pokemon.length > 0 && player.mapin == "OAK") {
         textBox.text = "You got " + pokemon[0].pokemonName.pokemon.name
