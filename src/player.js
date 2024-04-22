@@ -369,7 +369,9 @@ class Player {
                                 // if (building.text == "door") {
                                 this.enterPressed = false
                                 this.mapin = "initial"
-                                this.xpos = getMap()["buildings"][0].xpos - this.width
+                                this.xpos = getMap()["buildings"][0].doorx  
+                                this.ypos=getMap()["buildings"][0].doory
+                                console.log( getMap()["buildings"][0].xpos - this.width, getMap()["buildings"][0]);
                                 // }
                                 // //console.log("collided with " + building)
                                 this.textToDisplay = building.text

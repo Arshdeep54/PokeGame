@@ -14,8 +14,6 @@ console.log("Go to oak house and touch the table at the point it will say 'Selec
 console.log("Travel through the grass (for now horizontlly ) and you will randomly end up in war ")
 console.log("After war ends , get to the center ,touch the table ,press enter to heal your pokemon")
 
-
-
 let pokemon = JSON.parse(localStorage.getItem("pokemon"))
 let rivalPokemon = JSON.parse(localStorage.getItem("rivalPokemon"))
 let textToDisplay = " "
