@@ -4,31 +4,28 @@ function CalculateDistance(x1, y1, x2, y2) {
 function getMap() {
     let constants = {
         house: {
-            xpos: 75,
-            ypos: 140,
-            width: 150,
-            height: 110,
+            xpos: canvas.width / 20,
+            ypos: canvas.height / 4,
+            width: canvas.width / 10,
+            height: canvas.height / 6,
 
         },
         oak: {
-            xpos: 600,
-            ypos: 300,
-            width: 150,
-            height: 110,
+            xpos: canvas.width / 2.5,
+            ypos: canvas.height / 3,
+
 
         },
         mart: {
-            xpos: 1050,
-            ypos: 150,
-            width: 150,
-            height: 110,
+            xpos: canvas.width / 1.3,
+            ypos: canvas.height / 6,
+
 
         },
         center: {
-            xpos: 1150,
-            ypos: 350,
-            width: 150,
-            height: 110,
+            xpos: canvas.width / 1.2,
+            ypos: canvas.height / 2,
+
 
         },
 
@@ -52,22 +49,29 @@ function getMap() {
         grasses: [
             new GrassField(
                 Math.ceil(canvas.width / (3 * constants.grass.grass_width)),
-                Math.ceil(canvas.height - constants.oak.ypos - constants.oak.height - constants.road.width - 2 * constants.fence.width),
+                Math.ceil(canvas.height - constants.oak.ypos - constants.house.height - constants.road.width - 2 * constants.fence.width),
                 constants.fence.width + constants.road.width + canvas.width / 4,
-                constants.oak.ypos + constants.oak.height + constants.road.width - constants.fence.width
+                constants.oak.ypos + constants.house.height + constants.road.width - constants.fence.width
             ),
+
             new GrassField(
-                10,
-                Math.ceil((constants.house.ypos + constants.house.height - canvas.height / 6) / constants.grass.grass_height),
-                constants.fence.width + canvas.width / 4 + constants.road.width,
-                canvas.height / 6),
+                Math.ceil((canvas.width / 3 + constants.road.width) / (constants.grass.grass_width)),
+                Math.ceil(canvas.height / (6 * constants.grass.grass_height)),
+                constants.fence.width + (canvas.width / 4) + constants.road.width,
+                0
+            ),
+
         ],
         roads: [
             new Road(constants.fence.width, constants.house.ypos + constants.house.height, canvas.width / 4, constants.road.width, true),
-            new Road(constants.fence.width + canvas.width / 4, constants.fence.width, constants.road.width, canvas.height / 1.3, true),
+            new Road(
+                constants.fence.width + canvas.width / 4,
+                constants.fence.width,
+                constants.road.width,
+                canvas.height / 1.3, true),
             new Road(
                 constants.fence.width + constants.road.width + canvas.width / 4,
-                constants.oak.ypos + constants.oak.height,
+                constants.oak.ypos + constants.house.height,
                 canvas.width / 3,
                 constants.road.width,
                 true
@@ -76,12 +80,12 @@ function getMap() {
                 constants.fence.width + constants.road.width + canvas.width / 4 + canvas.width / 3,
                 canvas.height / 6,
                 constants.road.width,
-                canvas.height / 1.3
+                canvas.height / 1.2
 
             ),
             new Road(
                 constants.fence.width + constants.road.width + canvas.width / 4 + canvas.width / 3 + constants.road.width,
-                constants.center.ypos + constants.center.height,
+                constants.center.ypos + constants.house.height,
                 canvas.width - (constants.fence.width + constants.road.width + canvas.width / 4 + canvas.width / 3 + constants.road.width),
                 constants.road.width
             )
@@ -93,24 +97,36 @@ function getMap() {
                 Math.ceil(constants.house.ypos / constants.trees.tree_height),
                 constants.fence.width,
                 constants.fence.width),
-            new TreeField(1, Math.ceil((constants.oak.ypos - constants.house.ypos) / constants.trees.tree_height), constants.fence.width + (canvas.width / 4) + constants.road.width, constants.house.ypos + constants.house.height),
-            new TreeField(Math.ceil(canvas.width / (2 * constants.trees.tree_width)), Math.ceil(canvas.height / (6 * constants.trees.tree_height)), constants.fence.width + (canvas.width / 4) + constants.road.width, constants.fence.width),
-            new TreeField(5, 1, constants.fence.width + (canvas.width / 4) + constants.road.width, constants.house.ypos + constants.house.height),
+            new TreeField(
+                1,
+                Math.floor((constants.house.height) / constants.trees.tree_height),
+                constants.fence.width + (canvas.width / 4) + constants.road.width,
+                constants.oak.ypos),
+            new TreeField(
+                Math.ceil(canvas.width / (4 * constants.trees.tree_width)),
+                Math.ceil((constants.oak.ypos - canvas.height / 6) / constants.trees.tree_height),
+                constants.fence.width + canvas.width / 4 + constants.road.width,
+                canvas.height / 6),
+            new TreeField(
+                Math.floor((constants.oak.xpos - constants.fence.width - (canvas.width / 4) - constants.road.width) / (constants.trees.tree_width)),
+                1,
+                constants.fence.width + (canvas.width / 4) + constants.road.width,
+                constants.oak.ypos),
             new TreeField(
                 Math.ceil(
                     (canvas.width - (constants.fence.width + constants.road.width + canvas.width / 4 + canvas.width / 3 + constants.road.width)
                     ) / constants.trees.tree_width),
                 Math.ceil(
-                    (canvas.height - (constants.center.ypos + constants.center.height + constants.road.width)) / constants.trees.tree_height
+                    (canvas.height - (constants.center.ypos + constants.house.height + constants.road.width)) / constants.trees.tree_height
                 ),
                 constants.fence.width + constants.road.width + canvas.width / 4 + canvas.width / 3 + constants.road.width,
-                constants.center.ypos + constants.center.height + constants.road.width
+                constants.center.ypos + constants.house.height + constants.road.width
             ),
             new TreeField(
                 Math.ceil(
                     (constants.road.width + canvas.width / 4) / constants.trees.tree_width),
                 Math.ceil(
-                    (canvas.height - (constants.center.ypos + constants.center.height + constants.road.width)) / constants.trees.tree_height
+                    (canvas.height - (constants.center.ypos + constants.house.height + constants.road.width)) / constants.trees.tree_height
                 ),
                 constants.fence.width,
                 canvas.height / 1.3 + constants.fence.width
@@ -118,10 +134,10 @@ function getMap() {
 
         ],
         buildings: [
-            new Building(75, 140, "House", 150, 110, true, "#b0ccd5", "house"),
-            new Building(600, 300, "OAK", 150, 110, true, "#b0ccd5", "house"),
-            new Building(1070, 150, "Mart", 150, 110, true, "#b0ccd5", "Mart"),
-            new Building(1150, 350, "Center", 150, 110, true, "#b0ccd5", "Center")
+            new Building(constants.house.xpos, constants.house.ypos, "House", constants.house.width, constants.house.height, true, "#b0ccd5", "house"),
+            new Building(constants.oak.xpos, constants.oak.ypos, "OAK", constants.house.width, constants.house.height, true, "#b0ccd5", "house"),
+            new Building(constants.mart.xpos, constants.mart.ypos, "Mart", constants.house.width, constants.house.height, true, "#b0ccd5", "Mart"),
+            new Building(constants.center.xpos, constants.center.ypos, "Center", constants.house.width, constants.house.height, true, "#b0ccd5", "Center")
         ],
         fences: [
             // new Fence(constants.house.xpos-constants.fence.width-25,100,20,200,true),
@@ -131,10 +147,10 @@ function getMap() {
             new Fence(0, canvas.height - 10, canvas.width, constants.fence.width, false, "fence"),
             new Fence(canvas.width - 10, 0, constants.fence.width, canvas.height, true, "fence"),
             new Fence(constants.fence.width, constants.house.ypos + constants.house.height + constants.road.width, canvas.width / 4, constants.fence.width, false, "fence"),
-            new Fence(constants.fence.width + canvas.width / 4 + constants.road.width, constants.oak.ypos + constants.oak.height + constants.road.width - constants.fence.width, canvas.width / 3, constants.fence.width, false, "fence")
+            new Fence(constants.fence.width + canvas.width / 4 + constants.road.width, constants.oak.ypos + constants.house.height + constants.road.width - constants.fence.width, canvas.width / 3, constants.fence.width, false, "fence")
         ],
         pool: [
-            new Pool(constants.fence.width + 50, constants.house.ypos + constants.house.height + constants.road.width + constants.fence.width + 30, canvas.width / 4 - 100, canvas.height - (canvas.height / 1.3 + constants.fence.width)-constants.trees.tree_height)
+            new Pool(constants.fence.width + 50, constants.house.ypos + constants.house.height + constants.road.width + constants.fence.width + 30, canvas.width / 4 - 100, canvas.height - (canvas.height / 1.3 + constants.fence.width) - constants.trees.tree_height)
         ]
     };
 }
@@ -147,7 +163,7 @@ function getOakMap() {
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
         ],
         tables: [
-            new Table(tablexpos, tableypos, 100, 100, 200, 100, "table")
+            new Table(tablexpos, tableypos, 100, 100, 200, 100, "table"," ")
         ],
         balls: [
             new Ball(tablexpos + 40, tableypos + 40, 20, "blue"),
@@ -166,7 +182,7 @@ function getCenterMap() {
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
         ],
         tables: [
-            new Table(tablexpos, tableypos, 100, 100, 200, 100, "table")
+            new Table(tablexpos, tableypos, 100, 100, 200, 100, "table","Healing Table")
         ],
 
     }
@@ -186,9 +202,9 @@ function getBattleMap() {
 
     }
 }
-function getMartMap(){
+function getMartMap() {
     return {
-        rectangles:[
+        rectangles: [
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "#4B4FBD", "Mart"),
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
 
@@ -196,9 +212,9 @@ function getMartMap(){
     }
 }
 
-function getHouseMap(){
+function getHouseMap() {
     return {
-        rectangles:[
+        rectangles: [
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "#4B4FBD", "House"),
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
 

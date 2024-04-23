@@ -167,13 +167,13 @@ class TextBox {
                     }
                     else {
                         let smove = this.options.fightOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
-                        //console.log(smove);
+                        console.log(smove);
                         if (smove.option != ".....") {
                             this.selectedMove = this.moves.find(move => move.move === smove.option)
                             this.chosenText = "You chose " + this.selectedMove.move
                             this.showBattleOptions = true
                             this.movedone = true
-                            //console.log(this.selectedMove);
+                            console.log(this.selectedMove);
 
                         }
                     }

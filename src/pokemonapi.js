@@ -148,6 +148,8 @@ async function getMoves(moves, level) {
       change: data.stat_changes?.find(change => change.stat.name === "attack")?.change ||
               (data.stat_changes?.find(change => change.stat.name === "defense")?.change * -1) ||
               0,
+      power:data.power,
+      pp:data.pp
     }));
   }
 const getMove = async (url) => {

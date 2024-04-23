@@ -88,7 +88,7 @@ class Player {
                 if (this.textToDisplay == "OAK" || this.textToDisplay == "Center" || this.textToDisplay == "Mart"|| this.textToDisplay=="House") {
                     this.enterPressed = true
                     this.xpos = canvas.width / 2
-                    this.ypos=getMap()[1].ypos+20
+                    // this.ypos=getMap()["buildings"][1].ypos+20
 
                 } else if (this.textToDisplay == "table" && this.mapin == "OAK") {
                     this.ballSelecting = true
@@ -102,6 +102,7 @@ class Player {
                         newPokemonArray.push(pokemon);
                     }
                     localStorage.setItem("pokemon", JSON.stringify(newPokemonArray))
+                    this.textToDisplay="Your Pokemons are healed"
                     //console.log(
                         // newPokemonArray
                     // );
@@ -182,7 +183,6 @@ class Player {
                             }
                         }
                         else {
-                            this.inGrass = null
                             this.textToDisplay = " "
                         }
                     }
