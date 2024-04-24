@@ -5,15 +5,10 @@ const getRandomPokemon = async () => {
 
     let pokemon = await getslot(pokemons, 1, true);
 
-    // //console.log(localStorage.getItem("pokemon"))
     if (JSON.parse(localStorage.getItem("pokemon")).length == 0) {
-        //console.log("empty storage");
         let pokemonArray = [pokemon]
         localStorage.setItem("pokemon", JSON.stringify(pokemonArray))
-        //console.log(JSON.parse(localStorage.getItem("pokemon")), "updated ")
-
     }
-    // //console.log(pokemon)
 }
 const getslot = async (pokemons, slot, isMine) => {
     const max = pokemons.length
@@ -26,11 +21,11 @@ const getslot = async (pokemons, slot, isMine) => {
 
     let showdownImagef = pokemonData.sprites.other.showdown.front_default
     let showdownImageb = pokemonData.sprites.other.showdown.back_default
-    //console.log(showdownImageb, showdownImagef);
-    // let moves =getMoves(pokemonData.moves,1)
-    // if(moves.length==0){
-    //     await getslot(pokemons, slot)
-    // }
+    console.log(showdownImageb, showdownImagef);
+    let moves =getMoves(pokemonData.moves,1)
+    if(moves.length==0){
+        await getslot(pokemons, slot)
+    }
     // moves.forEach(async move => {
     //     moveData=await getMove(move.move.url)
     //     //console.log(moveData);
@@ -39,7 +34,7 @@ const getslot = async (pokemons, slot, isMine) => {
     //     // }
     // });
     if (pokemons[random].slot == not_slot || (showdownImagef == null && showdownImageb == null)) {
-        //console.log("somethings missing ");
+        console.log("somethings missing ");
         await getslot(pokemons, slot)
 
     }

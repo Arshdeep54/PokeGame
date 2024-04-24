@@ -14,7 +14,7 @@ class Pokemon {
         this.image.src = this.isMine?pokemonImage:rivalPokemonImage
         const pokImage = this.image
 
-        if (pokImage.complete) {
+        if (pokImage) {
             context.drawImage(pokImage, this.xpos, this.ypos, 200, 200)
         }
     }

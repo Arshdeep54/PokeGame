@@ -1,3 +1,19 @@
+const ENUM={
+    OAK:"OAK",
+    INITIAL:"initial",
+    HOUSE:"House",
+    GET_FROM_OAK:"Get one from Prof oak",
+    CENTER:"Center",
+    MART:"Mart",
+    NO_POKEMON:"You don't have any pokemon",
+    PRESS_ENTER:"Press Enter to Enter the ",
+    BG_COLOR:"#6ece67",
+    EMPTY_STRING:" ",
+    BATTLE:"battle"
+
+
+}
+
 class Player {
     constructor(xpos, ypos, width, height, color, ctx, textToDisplay) {
         this.xpos = xpos;
@@ -13,7 +29,7 @@ class Player {
         this.inGrass = null
         this.entered = null
         this.enterPressed = false
-        this.mapin = "initial"
+        this.mapin = ENUM.INITIAL
         this.collidingTable = false
         this.healingTable = false
         this.textToDisplay = textToDisplay
@@ -85,15 +101,15 @@ class Player {
                 this.moveDown();
                 break;
             case 'Enter':
-                if (this.textToDisplay == "OAK" || this.textToDisplay == "Center" || this.textToDisplay == "Mart"|| this.textToDisplay=="House") {
+                if (this.textToDisplay == ENUM.OAK || this.textToDisplay == ENUM.CENTER || this.textToDisplay == ENUM.MART|| this.textToDisplay==ENUM.HOUSE) {
                     this.enterPressed = true
                     this.xpos = canvas.width / 2
                     // this.ypos=getMap()["buildings"][1].ypos+20
 
-                } else if (this.textToDisplay == "table" && this.mapin == "OAK") {
+                } else if (this.textToDisplay == "table" && this.mapin == ENUM.OAK) {
                     this.ballSelecting = true
 
-                } else if (this.textToDisplay == "table" && this.mapin == "Center") {
+                } else if (this.textToDisplay == "table" && this.mapin == ENUM.CENTER) {
                     this.healingTable = true
                     let pokemons = JSON.parse(localStorage.getItem("pokemon"))
                     let newPokemonArray = [];
@@ -149,7 +165,7 @@ class Player {
 
     // Check collisions with buildings and trees
     handleCollisions() {
-        if (this.mapin == "initial") {
+        if (this.mapin == ENUM.INITIAL) {
 
             const map = getMap(); // Replace with your map data structure
             for (const buildingType in map) {
@@ -162,7 +178,7 @@ class Player {
                             return true
 
                         } else {
-                            this.textToDisplay = " "
+                            this.textToDisplay = ENUM.EMPTY_STRING
 
                         }
                     }
@@ -175,28 +191,28 @@ class Player {
                             if (this.isAllowedInGrass) {
                                 // //console.log(building)
                                 this.inGrass = building
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
                             } else {
-                                this.textToDisplay = " You don't have any pokemon "
+                                this.textToDisplay = ENUM.NO_POKEMON
 
                                 return true
                             }
                         }
                         else {
-                            this.textToDisplay = " "
+                            this.textToDisplay = ENUM.EMPTY_STRING
                         }
                     }
                 }
 
             }
-        } else if (this.mapin == "OAK") {
+        } else if (this.mapin == ENUM.OAK) {
             const oakmap = getOakMap()
 
             for (const buildingType in oakmap) {
                 if (buildingType == "rectangles") {
 
                     for (const building of oakmap[buildingType]) {
-                        if (building.text == "OAK") {
+                        if (building.text == ENUM.OAK) {
 
                             if (this.collidesFromInside(building)) {
                                 // //console.log(building);
@@ -205,7 +221,7 @@ class Player {
                                 return true
 
                             } else {
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
                                 // //console.log("not colliding")
 
                             }
@@ -213,7 +229,7 @@ class Player {
                             if (this.collidesWith(building)) {
                                 if (building.text == "door") {
                                     this.enterPressed = false
-                                    this.mapin = "initial"
+                                    this.mapin = ENUM.INITIAL
                                     this.xpos = getMap()["buildings"][1].xpos - this.width
 
                                 }
@@ -223,7 +239,7 @@ class Player {
 
                             } else {
                                 this.collidingTable = false
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
 
                             }
                         }
@@ -241,13 +257,13 @@ class Player {
 
                         } else {
                             this.collidingTable = false
-                            this.textToDisplay = " "
+                            this.textToDisplay = ENUM.EMPTY_STRING
 
                         }
                     }
                 }
             }
-        } else if (this.mapin == "Center") {
+        } else if (this.mapin == ENUM.CENTER) {
             //console.log("in center ");
             const centerMap = getCenterMap()
 
@@ -255,7 +271,7 @@ class Player {
                 if (buildingType == "rectangles") {
 
                     for (const building of centerMap[buildingType]) {
-                        if (building.text == "Center") {
+                        if (building.text == ENUM.CENTER) {
 
                             if (this.collidesFromInside(building)) {
                                 //console.log(building);
@@ -264,14 +280,14 @@ class Player {
                                 return true
 
                             } else {
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
                                 //console.log("not colliding 222")
                             }
                         } else {
                             if (this.collidesWith(building)) {
                                 // if (building.text == "door") {
                                 this.enterPressed = false
-                                this.mapin = "initial"
+                                this.mapin = ENUM.INITIAL
                                 this.xpos = getMap()["buildings"][3].xpos - this.width
                                 // }
                                 // //console.log("collided with " + building)
@@ -279,7 +295,7 @@ class Player {
                                 return true
 
                             } else {
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
                                 //console.log("not colliding")
 
                             }
@@ -298,13 +314,13 @@ class Player {
 
                         } else {
                             this.healingTable = false
-                            this.textToDisplay = " "
+                            this.textToDisplay = ENUM.EMPTY_STRING
 
                         }
                     }
                 }
             }
-        } else if (this.mapin == "Mart") {
+        } else if (this.mapin == ENUM.MART) {
             //console.log("in Mart ");
             const martMap = getMartMap()
 
@@ -312,7 +328,7 @@ class Player {
                 if (buildingType == "rectangles") {
 
                     for (const building of martMap[buildingType]) {
-                        if (building.text == "Mart") {
+                        if (building.text == ENUM.MART) {
 
                             if (this.collidesFromInside(building)) {
                                 //console.log(building);
@@ -321,14 +337,14 @@ class Player {
                                 return true
 
                             } else {
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
                                 //console.log("not colliding 222")
                             }
                         } else {
                             if (this.collidesWith(building)) {
                                 // if (building.text == "door") {
                                 this.enterPressed = false
-                                this.mapin = "initial"
+                                this.mapin = ENUM.INITIAL
                                 this.xpos = getMap()["buildings"][2].xpos - this.width
                                 // }
                                 // //console.log("collided with " + building)
@@ -336,7 +352,7 @@ class Player {
                                 return true
 
                             } else {
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
                                 //console.log("not colliding")
 
                             }
@@ -344,7 +360,7 @@ class Player {
                     }
                 }
             }
-        }else if (this.mapin == "House") {
+        }else if (this.mapin == ENUM.HOUSE) {
             //console.log("in House ");
             const houseMap = getHouseMap()
 
@@ -352,7 +368,7 @@ class Player {
                 if (buildingType == "rectangles") {
 
                     for (const building of houseMap[buildingType]) {
-                        if (building.text == "House") {
+                        if (building.text == ENUM.HOUSE) {
 
                             if (this.collidesFromInside(building)) {
                                 //console.log(building);
@@ -361,14 +377,14 @@ class Player {
                                 return true
 
                             } else {
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
                                 //console.log("not colliding 222")
                             }
                         } else {
                             if (this.collidesWith(building)) {
                                 // if (building.text == "door") {
                                 this.enterPressed = false
-                                this.mapin = "initial"
+                                this.mapin = ENUM.INITIAL
                                 this.xpos = getMap()["buildings"][0].doorx  
                                 this.ypos=getMap()["buildings"][0].doory
                                 console.log( getMap()["buildings"][0].xpos - this.width, getMap()["buildings"][0]);
@@ -378,7 +394,7 @@ class Player {
                                 return true
 
                             } else {
-                                this.textToDisplay = " "
+                                this.textToDisplay = ENUM.EMPTY_STRING
                                 //console.log("not colliding")
 
                             }

@@ -1,3 +1,4 @@
+
 class TextBox {
     constructor(text, xpos, ypos, width, height, context) {
         this.text = text
@@ -6,12 +7,12 @@ class TextBox {
         this.width = width
         this.height = height
         this.context = context
-        this.instruction = " "
+        this.instruction = ENUM.EMPTY_STRING
         this.inBattle = false
         this.isTlistening = false
-        this.mapin = "battle"
+        this.mapin = ENUM.BATTLE
         this.movedone = false
-        this.chosenText = " "
+        this.chosenText = ENUM.EMPTY_STRING
         document.addEventListener('keydown', this.handlekeypressed.bind(this));
         this.selectedBattleOption = null
         this.selectedMove = null
@@ -154,16 +155,27 @@ class TextBox {
                     if (this.showBattleOptions && !this.movedone) {
                         this.selectedBattleOption = this.options.battleOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
                         //console.log(this.selectedBattleOption);
-                        if(this.selectedBattleOption.option=="Run"){
+                        if (this.selectedBattleOption.option == "Run") {
 
                             this.battledone = true
+                            console.log("textBox.battledone", this.battledone)
+
                             this.inBattle = false
+                            console.log("textBox.inBattle", this.inBattle)
+
                             this.isTlistening = false
-                            this.mapin = "initial"
+                            console.log("textBox.isTlistening", this.isTlistening)
+                            this.showBattleOptions = false
+                            console.log("textBox.showBattleOptions", this.showBattleOptions)
+                            this.mapin = ENUM.INITIAL
+                            console.log("textBox.mapin", this.mapin)
+                            
                             return
                         }
-                        if(this.selectedBattleOption.option=="Fight")
-                        this.showBattleOptions = false
+                        if (this.selectedBattleOption.option == "Fight") {
+                            this.showBattleOptions = false
+                            console.log("textBox.showBattleOptions", this.showBattleOptions)
+                        }
                     }
                     else {
                         let smove = this.options.fightOptions.find(option => option.xpos - 15 === this.cursor.x && option.ypos === this.cursor.y);
@@ -171,8 +183,9 @@ class TextBox {
                         if (smove.option != ".....") {
                             this.selectedMove = this.moves.find(move => move.move === smove.option)
                             this.chosenText = "You chose " + this.selectedMove.move
-                            this.showBattleOptions = true
+                            this.battledone=true
                             this.movedone = true
+                            console.log("textBox.movedone", this.movedone)
                             console.log(this.selectedMove);
 
                         }
@@ -181,12 +194,16 @@ class TextBox {
                     // //console.log(option.xpos - 15, this.cursor.x, option.ypos, this.cursor.y);
                     this.cursor.x = this.showBattleOptions ? this.cornerp.left2 - 15 : this.cornerp.left1 - 15
                     this.inBattle = true
-
+                    console.log("textBox.inBattle", this.inBattle)
+                    
                 } else {
                     //console.log("battle ended ");
                     this.inBattle = false
+                    console.log("textBox.inBattle", this.inBattle)
                     this.isTlistening = false
-                    this.mapin = "initial"
+                    console.log("textBox.isTlistening", this.isTlistening)
+                    this.mapin = ENUM.INITIAL
+                    console.log("textBox.mapin", this.mapin)
 
                 }
                 break

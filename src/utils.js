@@ -1,3 +1,4 @@
+
 function CalculateDistance(x1, y1, x2, y2) {
     return Math.sqrt((Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)))
 }
@@ -134,10 +135,10 @@ function getMap() {
 
         ],
         buildings: [
-            new Building(constants.house.xpos, constants.house.ypos, "House", constants.house.width, constants.house.height, true, "#b0ccd5", "house"),
-            new Building(constants.oak.xpos, constants.oak.ypos, "OAK", constants.house.width, constants.house.height, true, "#b0ccd5", "house"),
-            new Building(constants.mart.xpos, constants.mart.ypos, "Mart", constants.house.width, constants.house.height, true, "#b0ccd5", "Mart"),
-            new Building(constants.center.xpos, constants.center.ypos, "Center", constants.house.width, constants.house.height, true, "#b0ccd5", "Center")
+            new Building(constants.house.xpos, constants.house.ypos, ENUM.HOUSE, constants.house.width, constants.house.height, true, "#b0ccd5", ENUM.HOUSE),
+            new Building(constants.oak.xpos, constants.oak.ypos, ENUM.OAK, constants.house.width, constants.house.height, true, "#b0ccd5", ENUM.HOUSE),
+            new Building(constants.mart.xpos, constants.mart.ypos, ENUM.MART, constants.house.width, constants.house.height, true, "#b0ccd5", ENUM.MART),
+            new Building(constants.center.xpos, constants.center.ypos, ENUM.CENTER, constants.house.width, constants.house.height, true, "#b0ccd5", ENUM.CENTER)
         ],
         fences: [
             // new Fence(constants.house.xpos-constants.fence.width-25,100,20,200,true),
@@ -153,17 +154,16 @@ function getMap() {
             new Pool(constants.fence.width + 50, constants.house.ypos + constants.house.height + constants.road.width + constants.fence.width + 30, canvas.width / 4 - 100, canvas.height - (canvas.height / 1.3 + constants.fence.width) - constants.trees.tree_height)
         ]
     };
-}
-function getOakMap() {
+}function getOakMap() {
     let tablexpos = canvas.width / 2
     let tableypos = canvas.height / 2 - 200
     return {
         rectangles: [
-            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "blue", "OAK"),
+            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "blue", ENUM.OAK),
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
         ],
         tables: [
-            new Table(tablexpos, tableypos, 100, 100, 200, 100, "table"," ")
+            new Table(tablexpos, tableypos, 100, 100, 200, 100, "table",ENUM.EMPTY_STRING)
         ],
         balls: [
             new Ball(tablexpos + 40, tableypos + 40, 20, "blue"),
@@ -172,13 +172,12 @@ function getOakMap() {
         ],
 
     }
-}
-function getCenterMap() {
+}function getCenterMap() {
     let tablexpos = canvas.width / 2 - 100
     let tableypos = canvas.height / 2 - 200
     return {
         rectangles: [
-            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "blue", "Center"),
+            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "blue", ENUM.CENTER),
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
         ],
         tables: [
@@ -187,7 +186,6 @@ function getCenterMap() {
 
     }
 }
-
 function getBattleMap() {
     return {
         hpbars: [
@@ -201,21 +199,19 @@ function getBattleMap() {
         ]
 
     }
-}
-function getMartMap() {
+}function getMartMap() {
     return {
         rectangles: [
-            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "#4B4FBD", "Mart"),
+            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "#4B4FBD", ENUM.MART),
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
 
         ]
     }
 }
-
 function getHouseMap() {
     return {
         rectangles: [
-            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "#4B4FBD", "House"),
+            new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 250, 500, 500, "#4B4FBD", ENUM.HOUSE),
             new Rectangle(canvas.width / 2 - 250, canvas.height / 2 - 40, 10, 80, "red", "door")
 
         ]
