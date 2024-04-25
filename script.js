@@ -14,6 +14,11 @@ import {
 
 window.addEventListener("orientationchange", function () {
   location.reload();
+  setTimeout(() => {
+    window.scrollTo(0, document.body.scrollHeight);
+  }, 0);
+  location.reload();
+
 });
 const controls = document.getElementById("controls");
 
