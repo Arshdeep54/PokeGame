@@ -108,18 +108,7 @@ export class TextBox {
     this.context.fillStyle = "black";
     let font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
     this.context.font = `${font} serif`;
-    // console.log(
-    //   "xpos,ypos,width,height",
-    //   this.xpos,
-    //   this.ypos,
-    //   this.width,
-    //   this.height
-    // );
-    // console.log(
-    //   "text",
-    //   this.xpos + (10 * this.width) / 100,
-    //   this.ypos + (30 * this.height) / 100
-    // );
+    
     this.context.fillText(
       this.text,
       this.xpos + (10 * this.width) / 100,
@@ -130,11 +119,7 @@ export class TextBox {
       this.xpos + (10 * this.width) / 100,
       this.ypos + this.height - (10 * this.height) / 100
     );
-    // console.log(
-    //   "insss",
-    //   this.xpos + (10 * this.width) / 100,
-    //   this.ypos + this.height - (10 * this.height) / 10
-    // );
+  
     if (this.inBattle && !this.battledone) {
       this.loadMoves();
 
@@ -160,104 +145,7 @@ export class TextBox {
   }
 
   handlekeypressed(event) {
-    // if (!this.isTlistening) return;
-    // switch (event.key) {
-    //   case "ArrowLeft":
-    //     if (
-    //       this.showBattleOptions &&
-    //       this.cursor.x != this.cornerp.left2 - 15
-    //     ) {
-    //       this.cursor.x = this.cornerp.left2 - 15;
-    //     } else if (
-    //       !this.showBattleOptions &&
-    //       this.cursor.x != this.cornerp.left1 - 15
-    //     ) {
-    //       this.cursor.x = this.cornerp.left1 - 15;
-    //     }
-    //     break;
-    //   case "ArrowRight":
-    //     if (
-    //       this.showBattleOptions &&
-    //       this.cursor.x != this.cornerp.right2 - 15
-    //     ) {
-    //       this.cursor.x = this.cornerp.right2 - 15;
-    //     } else if (
-    //       !this.showBattleOptions &&
-    //       this.cursor.x != this.cornerp.right1 - 15
-    //     ) {
-    //       this.cursor.x = this.cornerp.right1 - 15;
-    //     }
-
-    //     break;
-    //   case "ArrowUp":
-    //     if (this.cursor.y != this.cornerp.top) {
-    //       this.cursor.y = this.cornerp.top;
-    //     }
-
-    //     break;
-    //   case "ArrowDown":
-    //     if (this.cursor.x != this.cornerp.bottom) {
-    //       this.cursor.y = this.cornerp.bottom;
-    //     }
-    //     break;
-    //   case "Enter":
-    //     //console.log(this.cursor.x, this.cursor.y, this.xpos);
-    //     if (!this.battledone) {
-    //       if (this.showBattleOptions && !this.movedone) {
-    //         this.selectedBattleOption = this.options.battleOptions.find(
-    //           (option) =>
-    //             option.xpos - 15 === this.cursor.x &&
-    //             option.ypos === this.cursor.y
-    //         );
-    //         if (this.selectedBattleOption.option == "Run") {
-    //           this.battledone = true;
-    //           this.inBattle = false;
-    //           this.isTlistening = false;
-    //           this.mapin = ENUM.INITIAL;
-    //           return;
-    //         }
-    //         if (this.selectedBattleOption.option == "Fight") {
-    //           this.showBattleOptions = false;
-    //           console.log("textBox.showBattleOptions", this.showBattleOptions);
-    //         }
-    //       } else {
-    //         let smove = this.options.fightOptions.find(
-    //           (option) =>
-    //             option.xpos - 15 === this.cursor.x &&
-    //             option.ypos === this.cursor.y
-    //         );
-    //         console.log(smove);
-    //         if (smove.option != ".....") {
-    //           this.selectedMove = this.moves.find(
-    //             (move) => move.move === smove.option
-    //           );
-    //           this.chosenText = "You chose " + this.selectedMove.move;
-    //           console.log("You chose " + this.selectedMove.move)
-    //           this.isTlistening = false;
-    //           // this.battledone = true;
-    //           // this.movedone = true;
-    //         }
-    //       }
-
-    //       // //console.log(option.xpos - 15, this.cursor.x, option.ypos, this.cursor.y);
-    //       this.cursor.x = this.showBattleOptions
-    //         ? this.cornerp.left2 - 15
-    //         : this.cornerp.left1 - 15;
-    //       this.inBattle = true;
-    //       console.log("textBox.inBattle", this.inBattle);
-    //     } else {
-    //       //console.log("battle ended ");
-    //       this.inBattle = false;
-    //       console.log("textBox.inBattle", this.inBattle);
-    //       this.isTlistening = false;
-    //       console.log("textBox.isTlistening", this.isTlistening);
-    //       this.mapin = ENUM.INITIAL;
-    //       console.log("textBox.mapin", this.mapin);
-    //     }
-    //     break;
-    //   default:
-    //     break;
-    // }
+   
     if (!this.isTlistening) return;
     switch (event.key) {
       case "ArrowLeft":

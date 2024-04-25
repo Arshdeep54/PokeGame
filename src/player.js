@@ -42,7 +42,7 @@ export class Player {
     this.textToDisplay = textToDisplay;
     this.ballSelecting = false;
     this.isListening = true;
- 
+
     document.addEventListener("keydown", this.handleKeyDown.bind(this));
     this.images = {
       left: new Image(),
@@ -240,8 +240,8 @@ export class Player {
                 if (building.text == "door") {
                   this.enterPressed = false;
                   this.mapin = ENUM.INITIAL;
-                  this.xpos = getMap()["buildings"][1].xpos - this.width;
-                }
+                  this.xpos = getMap()["buildings"][1].doorx;
+                  this.ypos = getMap()["buildings"][1].doory;                }
                 // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;
@@ -290,7 +290,8 @@ export class Player {
                 // if (building.text == "door") {
                 this.enterPressed = false;
                 this.mapin = ENUM.INITIAL;
-                this.xpos = getMap()["buildings"][3].xpos - this.width;
+                this.xpos = getMap()["buildings"][3].doorx;
+                this.ypos = getMap()["buildings"][3].doory;
                 // }
                 // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
@@ -340,8 +341,8 @@ export class Player {
                 // if (building.text == "door") {
                 this.enterPressed = false;
                 this.mapin = ENUM.INITIAL;
-                this.xpos = getMap()["buildings"][2].xpos - this.width;
-                // }
+                this.xpos = getMap()["buildings"][2].doorx;
+                this.ypos = getMap()["buildings"][2].doory; // }
                 // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;

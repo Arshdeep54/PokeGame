@@ -103,91 +103,9 @@ player.xpos = getMap().buildings[0].doorx;
 player.ypos = getMap().buildings[0].doory + 10;
 player.width = isMobileOrTablet() ? 30 : 40;
 player.height = isMobileOrTablet() ? 45 : 60;
-player.speed = isMobileOrTablet() ? 7 : 5;
+player.speed = isMobileOrTablet() ? 8 : 5;
 
-// function handleBattle() {
-//   player.mapin = "battle";
-//   player.isListening = false;
-//   context.fillStyle = ENUM.BG_COLOR;
-//   context.fillRect(0, 0, canvas.width, canvas.height);
-//   draw();
-//   textBox.draw();
-//   textBox.instruction = " ";
-//   textBox.inBattle = true;
-//   textBox.isTlistening = true;
-//   if (textBox.selectedMove != null) {
-//     textBox.battleStatus = null;
-//     console.warn(
-//       "this.inBattle && !this.battledone",
-//       textBox.inBattle,
-//       !textBox.battledone
-//     );
-//     let attack_change = textBox.selectedMove.power;
-//     rivalPokemon = JSON.parse(localStorage.getItem("rivalPokemon"));
-//     let level = rivalPokemon.rivalData.level;
-//     let hp = rivalPokemon.rivalData.hp;
-//     if (hp > 0) {
-//       rivalPokemon.rivalData.hp =
-//         rivalPokemon.rivalData.hp - attack_change * level;
-//       localStorage.setItem("rivalPokemon", JSON.stringify(rivalPokemon));
-//       textBox.selectedMove = null;
 
-//       textBox.isTlistening = false;
-//       textBox.movedone = true;
-//       rivalTurn = true;
-//       console.log("textBox.isTlistening", textBox.isTlistening);
-//     }
-//     rivalPokemon = JSON.parse(localStorage.getItem("rivalPokemon"));
-//     hp = rivalPokemon.rivalData.hp;
-//     if (hp <= 0) {
-//       console.log("hp down ");
-
-//       textBox.battleStatus = "won";
-//       textBox.battledone = true;
-//       console.log("textBox.battledone", textBox.battledone);
-//       console.warn(
-//         "this.inBattle && !this.battledone",
-//         textBox.inBattle,
-//         !textBox.battledone
-//       ); //false
-//     }
-//     console.log("attacks rival");
-//     console.warn(
-//       "this.inBattle && !this.battledone",
-//       textBox.inBattle,
-//       !textBox.battledone
-//     );
-//   }
-// }
-
-// async function rivalAttacks() {
-//   let moves = JSON.parse(localStorage.getItem("rivalPokemon")).validMoves;
-//   let random = Math.floor(Math.random() * moves.length);
-//   let randomMove = moves[random];
-//   console.log("rival move ", randomMove);
-//   textBox.chosenText = "Your opp chose " + randomMove.move;
-
-//   let attack_change = randomMove.power;
-
-//   pokemon = JSON.parse(localStorage.getItem("pokemon"));
-//   let level = pokemon[0].playerData.level;
-//   let hp = pokemon[0].playerData.currenthp;
-//   console.log("attack_change", attack_change);
-
-//   if (hp > 0 && textBox.battleStatus != "won") {
-//     pokemon[0].playerData.currenthp =
-//       pokemon[0].playerData.currenthp - attack_change * level;
-//     localStorage.setItem("pokemon", JSON.stringify(pokemon));
-//   }
-//   pokemon = JSON.parse(localStorage.getItem("pokemon"));
-//   hp = pokemon[0].playerData.currenthp;
-//   if (hp <= 0) {
-//     textBox.battleStatus = textBox.battleStatus != null ? "won" : "lost";
-//     textBox.battledone = true;
-//     console.log("textBox.battledone", textBox.battledone);
-//   }
-//   rivalTurn = false;
-// }
 async function handleBattle() {
   if (player.inGrass) {
     player.mapin = "battle";
@@ -202,14 +120,8 @@ async function handleBattle() {
     textBox.isTlistening = true;
 
     if (textBox.selectedMove != null) {
-      // let moveData = await getMove(textBox.selectedMove.move.url)
       let attack_change = textBox.selectedMove.power;
-      // //console.log("player Stat",moveData.stat_changes);
-      // let attack_change = moveData.stat_changes.length > 0 ? moveData.stat_changes.find(stat => stat.stat.name == "attack")?.change : 0
-      //console.log("position1", attack_change);
-
-      //console.log("position2", attack_change);
-
+     
       rivalPokemon = JSON.parse(localStorage.getItem("rivalPokemon"));
       let level = rivalPokemon.rivalData.level;
       let hp = rivalPokemon.rivalData.hp;
@@ -415,74 +327,7 @@ async function gameLoop() {
     textBox.instruction = ENUM.PRESS_ENTER + ENUM.HOUSE;
   }
 
-  // if (textBox.mapin === ENUM.INITIAL) {
-  //   if (player.inGrass != null) {
-  //     console.log("textBox.mapin", textBox.mapin);
-  //     player.xpos = player.inGrass["xpos"] + player.inGrass.width + 5;
-  //   }
 
-  //   textBox.mapin = ENUM.BATTLE;
-  //   console.log("textBox.mapin", textBox.mapin);
-
-  //   player.inGrass = null;
-  //   console.log("player.inGrass", player.inGrass);
-
-  //   player.mapin = ENUM.INITIAL;
-  //   console.log("player.mapin", player.mapin);
-  //   player.isListening = true;
-  //   console.log("player.isListening", player.isListening);
-  //   player.textToDisplay = ENUM.EMPTY_STRING;
-  //   console.log("player.textToDisplay", player.textToDisplay);
-
-  //   encounteredInCurrentGrass = false;
-  //   console.log("encounteredInCurrentGrass", encounteredInCurrentGrass);
-  // }
-
-  // if (player.inGrass) {
-  //   if (!encounteredInCurrentGrass) {
-  //     console.log("Step 1", player.inGrass);
-  //     await generateRivalPok();
-  //     rivalPokemonXpos =
-  //       Math.floor(Math.random() * (player.inGrass.width + 1)) +
-  //       player.inGrass.xpos;
-  //     console.log(rivalPokemonXpos, rivalPokemonXpos % 10);
-  //     rivalPokemonXpos = rivalPokemonXpos - (rivalPokemonXpos % 10);
-  //     encounteredInCurrentGrass = true;
-  //     textBox.battledone = false;
-  //     textBox.battleStatus = null;
-  //   }
-
-  //   if (
-  //     player.xpos > rivalPokemonXpos - 10 &&
-  //     player.xpos < rivalPokemonXpos + 10
-  //   ) {
-  //     handleBattle();
-  //   }
-  // }
-  // if (textBox.movedone) {
-  //   textBox.isTlistening = false;
-  //   await new Promise((resolve) => setTimeout(resolve, 1500));
-  //   pokemon = JSON.parse(localStorage.getItem("pokemon"));
-  //   if (!rivalTurn) {
-  //     if (textBox.battleStatus == "won") {
-  //       player.textToDisplay = "> You won +23 exp ";
-  //       pokemon[0].playerData.exp = pokemon[0].playerData.exp + 23;
-  //     } else if (textBox.battleStatus == "lost") {
-  //       player.textToDisplay = "> you lost $40";
-  //       pokemon[0].playerData.paisa = pokemon[0].playerData.paisa - 40;
-  //     }
-  //     rivalTurn = false;
-  //   }
-
-  //   localStorage.setItem("pokemon", JSON.stringify(pokemon));
-  //   textBox.movedone = false;
-  //   textBox.showBattleOptions = true;
-  //   textBox.isTlistening = true;
-  // }
-  // if (rivalTurn) {
-  //   await rivalAttacks();
-  //   textBox.movedone = true;
-  // }
   if (player.inGrass) {
     if (!encounteredInCurrentGrass) {
       // console.log(player.inGrass);
