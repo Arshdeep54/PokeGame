@@ -85,7 +85,9 @@ export class TextBox {
     };
   }
   async loadMoves() {
-    this.moves = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0].validMoves;
+    this.moves = JSON.parse(
+      localStorage.getItem(ENUM.POKEMON_KEY)
+    )[0].validMoves;
     this.options.fightOptions.forEach((fightOption, index) => {
       if (this.moves.length > index) {
         fightOption.option = this.moves[index].move;
@@ -106,7 +108,7 @@ export class TextBox {
     this.context.fillStyle = ENUM.COLORS.BLACK;
     let font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
     this.context.font = `${font} serif`;
-    
+
     this.context.fillText(
       this.text,
       this.xpos + (10 * this.width) / 100,
@@ -117,7 +119,7 @@ export class TextBox {
       this.xpos + (10 * this.width) / 100,
       this.ypos + this.height - (10 * this.height) / 100
     );
-  
+
     if (this.inBattle && !this.battledone) {
       this.loadMoves();
 
@@ -140,7 +142,6 @@ export class TextBox {
   }
 
   handlekeypressed(event) {
-   
     if (!this.isTlistening) return;
     switch (event.key) {
       case "ArrowLeft":

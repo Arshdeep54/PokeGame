@@ -15,7 +15,7 @@ export class TreeField {
     this.tree.src = "./assets/images/tree.png";
   }
   draw(context) {
-     const treeImage = this.tree;
+    const treeImage = this.tree;
     if (treeImage.complete) {
       for (let i = 0; i < this.y; i++) {
         let y = this.ypos + i * 32;
@@ -26,7 +26,5 @@ export class TreeField {
         }
       }
     }
-
-  
   }
 }

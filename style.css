@@ -49,9 +49,9 @@ canvas {
   display: none;
   /* margin: 10rem; */
 }
-.text{
+.text {
   padding-top: 2rem;
-text-align: center;
+  text-align: center;
 }
 @media only screen and (orientation: portrait) {
   .main {

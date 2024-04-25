@@ -374,6 +374,6 @@ export class Player {
     }
   }
   update() {
-    this.draw(); 
+    this.draw();
   }
 }

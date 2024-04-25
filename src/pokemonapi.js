@@ -35,14 +35,8 @@ const getslot = async (pokemons, isMine, level) => {
       pokemonName: pokemons[random],
       pokemonData: pokemonData,
       playerData: {
-        gifF:
-          showdownImagef != null
-            ? showdownImagef
-            : ENUM.GIF_DEFAULT_FRONT,
-        gifB:
-          showdownImageb != null
-            ? showdownImageb
-            : ENUM.GIF_DEFAULT_BACK,
+        gifF: showdownImagef != null ? showdownImagef : ENUM.GIF_DEFAULT_FRONT,
+        gifB: showdownImageb != null ? showdownImageb : ENUM.GIF_DEFAULT_BACK,
         level: 1,
         paisa: 500,
         currenthp: pokemonData.stats[0].base_stat,
@@ -63,14 +57,8 @@ const getslot = async (pokemons, isMine, level) => {
         level: 1,
         hp: pokemonData.stats[0].base_stat,
         maxhp: pokemonData.stats[0].base_stat,
-        gifF:
-          showdownImagef != null
-            ? showdownImagef
-            : ENUM.GIF_DEFAULT_FRONT,
-        gifB:
-          showdownImageb != null
-            ? showdownImageb
-            : ENUM.GIF_DEFAULT_BACK,
+        gifF: showdownImagef != null ? showdownImagef : ENUM.GIF_DEFAULT_FRONT,
+        gifB: showdownImageb != null ? showdownImageb : ENUM.GIF_DEFAULT_BACK,
       },
       validMoves: validMoves,
     };
@@ -87,7 +75,7 @@ const getPokemonData = async (url) => {
 export const generateRivalPok = async () => {
   const pokemons = await getPokemons("grass");
   let player_pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-  let level_p = player_pokemon[0].playerData.level; 
+  let level_p = player_pokemon[0].playerData.level;
   let rivalPokemon = await getslot(pokemons, false, level_p + 1);
 
   localStorage.setItem(ENUM.RIVAL_POKEMON_KEY, JSON.stringify(rivalPokemon));
@@ -108,10 +96,10 @@ async function getMoves(moves, level) {
         detail.level_learned_at === level + 1 ||
         detail.level_learned_at === level - 1
       ) {
-        return true; 
+        return true;
       }
     }
-    return false; 
+    return false;
   });
 
   const moveDataPromises = filteredMoves.map(async (moveobj) => {

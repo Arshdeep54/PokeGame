@@ -378,47 +378,47 @@ export function getBattleMap() {
   return {
     hpbars: [
       new Healthbar(
-        isMobileOrTablet()?canvas.width / 4:canvas.width / 2 - 250,
-        isMobileOrTablet()?canvas.height / 5:canvas.height / 2 - 250,
+        isMobileOrTablet() ? canvas.width / 4 : canvas.width / 2 - 250,
+        isMobileOrTablet() ? canvas.height / 5 : canvas.height / 2 - 250,
         21,
         35,
         3,
         30,
         50,
         false,
-        isMobileOrTablet()?canvas.width / 3:250,
-        isMobileOrTablet()?canvas.height / 5:100,
+        isMobileOrTablet() ? canvas.width / 3 : 250,
+        isMobileOrTablet() ? canvas.height / 5 : 100,
         ""
       ),
 
       new Healthbar(
-        isMobileOrTablet()?canvas.width / 1.8:canvas.width / 2 +75,
-        isMobileOrTablet()?canvas.height / 1.8:canvas.height / 2 +50,
+        isMobileOrTablet() ? canvas.width / 1.8 : canvas.width / 2 + 75,
+        isMobileOrTablet() ? canvas.height / 1.8 : canvas.height / 2 + 50,
         29,
         35,
         5,
         30,
         60,
         true,
-        isMobileOrTablet()?canvas.width / 3:250,
-        isMobileOrTablet()?canvas.height / 5:100,
+        isMobileOrTablet() ? canvas.width / 3 : 250,
+        isMobileOrTablet() ? canvas.height / 5 : 100,
         "Bulbasore"
       ),
     ],
     pokemons: [
       new Pokemon(
-        isMobileOrTablet()?canvas.width / 4:canvas.width / 2 - 250,
-        isMobileOrTablet()?canvas.height / 2.2: canvas.height / 2 - 70,
+        isMobileOrTablet() ? canvas.width / 4 : canvas.width / 2 - 250,
+        isMobileOrTablet() ? canvas.height / 2.2 : canvas.height / 2 - 70,
         true,
-        isMobileOrTablet()?canvas.width / 6:200,
-        isMobileOrTablet()?canvas.height / 6:200
+        isMobileOrTablet() ? canvas.width / 6 : 200,
+        isMobileOrTablet() ? canvas.height / 6 : 200
       ),
       new Pokemon(
-        isMobileOrTablet()?canvas.width / 1.5:canvas.width / 2 + 150,
-        isMobileOrTablet()?canvas.height / 5:canvas.height / 2 - 200,
+        isMobileOrTablet() ? canvas.width / 1.5 : canvas.width / 2 + 150,
+        isMobileOrTablet() ? canvas.height / 5 : canvas.height / 2 - 200,
         false,
-        isMobileOrTablet()?canvas.width / 6:200,
-        isMobileOrTablet()?canvas.height / 6:200
+        isMobileOrTablet() ? canvas.width / 6 : 200,
+        isMobileOrTablet() ? canvas.height / 6 : 200
       ),
     ],
   };

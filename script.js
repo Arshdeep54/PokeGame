@@ -12,7 +12,7 @@ import {
   isMobileOrTablet,
 } from "./src/utils.js";
 
-window.addEventListener("orientationchange", function() {
+window.addEventListener("orientationchange", function () {
   location.reload();
 });
 const controls = document.getElementById("controls");
@@ -131,7 +131,10 @@ async function handleBattle() {
 
       if (hp > 0) {
         rivalPokemon.rivalData.hp = rivalPokemon.rivalData.hp - attack_change;
-        localStorage.setItem(ENUM.RIVAL_POKEMON_KEY, JSON.stringify(rivalPokemon));
+        localStorage.setItem(
+          ENUM.RIVAL_POKEMON_KEY,
+          JSON.stringify(rivalPokemon)
+        );
         textBox.selectedMove = null;
         console.log("attacks rival");
 
@@ -154,7 +157,9 @@ async function handleBattle() {
   }
 }
 async function rivalAttacks() {
-  let moves = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)).validMoves;
+  let moves = JSON.parse(
+    localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)
+  ).validMoves;
   let random = Math.floor(Math.random() * moves.length);
   let lrandomMove = {
     name: random,
@@ -393,9 +398,9 @@ async function gameLoop() {
     !player.isAllowedInGrass
   ) {
     for (let i = 0; i < 3; i++) {
-     if (
+      if (
         player.xpos >
-        getOakMap()[ENUM.BALLS][i].xpos - getOakMap()[ENUM.BALLS][i].radius &&
+          getOakMap()[ENUM.BALLS][i].xpos - getOakMap()[ENUM.BALLS][i].radius &&
         (i < 2
           ? player.xpos + player.width <
             getOakMap()["balls"][i + 1].xpos -
@@ -427,6 +432,4 @@ function handleWallCollisions() {
   }
 }
 
-
 init();
-

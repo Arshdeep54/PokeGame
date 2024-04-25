@@ -10,14 +10,23 @@ export class Pokemon {
     this.image = new Image();
   }
   draw(context) {
-    let pokemonImage = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0].playerData.gifB
-    let rivalPokemonImage = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)).rivalData.gifF
+    let pokemonImage = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0]
+      .playerData.gifB;
+    let rivalPokemonImage = JSON.parse(
+      localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)
+    ).rivalData.gifF;
 
     this.image.src = this.isMine ? pokemonImage : rivalPokemonImage;
     const pokImage = this.image;
 
     if (pokImage.complete && pokImage.src != null) {
-      context.drawImage(pokImage, this.xpos, this.ypos, this.width, this.height);
+      context.drawImage(
+        pokImage,
+        this.xpos,
+        this.ypos,
+        this.width,
+        this.height
+      );
     }
   }
 }
