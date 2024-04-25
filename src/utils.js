@@ -12,10 +12,14 @@ import { TreeField } from "./tree.js";
 import { ENUM } from "./types.js";
 
 export function isMobileOrTablet() {
+  const screenWidth = window.innerWidth;
+  const mobileBreakpoint = 1024;
+
   const userAgent = navigator.userAgent;
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+  const navigationTest= /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     userAgent
   );
+  return navigationTest || screenWidth<mobileBreakpoint
 }
 export function getMap() {
   let constants = {
