@@ -1,11 +1,13 @@
+import { ENUM } from "./types.js";
+
 export const getRandomPokemon = async () => {
   const pokemons = await getPokemons("grass");
 
   let pokemon = await getslot(pokemons, 1, true, 1);
 
-  if (JSON.parse(localStorage.getItem("pokemon")).length == 0) {
+  if (JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY)).length == 0) {
     let pokemonArray = [pokemon];
-    localStorage.setItem("pokemon", JSON.stringify(pokemonArray));
+    localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemonArray));
   }
 };
 const getslot = async (pokemons, isMine, level) => {
@@ -17,23 +19,17 @@ const getslot = async (pokemons, isMine, level) => {
 
   let showdownImagef = pokemonData.sprites.other.showdown.front_default;
   let showdownImageb = pokemonData.sprites.other.showdown.back_default;
-  // console.log(showdownImageb, showdownImagef);
   if (pokemonData.moves.length == 0) {
-    // console.log("moves missing ");
     await getslot(pokemons, isMine, level);
   }
   if (showdownImagef == null && showdownImageb == null) {
-    // console.log("gifs missing ");
     await getslot(pokemons, isMine, level);
   }
   let pokemon;
-  // console.log("  getting moves ");
   let validMoves = await getMoves(pokemonData.moves, level);
   if (validMoves.length == 0) {
-    // console.log("validmoves missing ");
     await getslot(pokemons, isMine, level);
   }
-  // console.log("validMoves", validMoves);
   if (isMine) {
     pokemon = {
       pokemonName: pokemons[random],
@@ -42,11 +38,11 @@ const getslot = async (pokemons, isMine, level) => {
         gifF:
           showdownImagef != null
             ? showdownImagef
-            : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/30.gif",
+            : ENUM.GIF_DEFAULT_FRONT,
         gifB:
           showdownImageb != null
             ? showdownImageb
-            : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/back/30.gif",
+            : ENUM.GIF_DEFAULT_BACK,
         level: 1,
         paisa: 500,
         currenthp: pokemonData.stats[0].base_stat,
@@ -64,17 +60,17 @@ const getslot = async (pokemons, isMine, level) => {
       rivalPokemon: pokemons[random],
       rivalPokemonData: pokemonData,
       rivalData: {
-        level: 1, //Math.floor(Math.random() * (level_p+1 - (level_p-1)) + level_p-1),
+        level: 1,
         hp: pokemonData.stats[0].base_stat,
         maxhp: pokemonData.stats[0].base_stat,
         gifF:
           showdownImagef != null
             ? showdownImagef
-            : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/30.gif",
+            : ENUM.GIF_DEFAULT_FRONT,
         gifB:
           showdownImageb != null
             ? showdownImageb
-            : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/back/30.gif",
+            : ENUM.GIF_DEFAULT_BACK,
       },
       validMoves: validMoves,
     };
@@ -89,24 +85,12 @@ const getPokemonData = async (url) => {
 };
 
 export const generateRivalPok = async () => {
-  // if (localStorage.getItem("rivalPokemon") === null) {
   const pokemons = await getPokemons("grass");
-  let player_pokemon = JSON.parse(localStorage.getItem("pokemon"));
-  // let slot_p = player_pokemon[0].pokemonName.slot;
-  let level_p = player_pokemon[0].playerData.level; //later I wll gchange it to max level pokemon the player has
+  let player_pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+  let level_p = player_pokemon[0].playerData.level; 
   let rivalPokemon = await getslot(pokemons, false, level_p + 1);
-  // //console.log(slot_p, rivalPokemon.pokemon);
-  // let rivalPokemonData = await getPokemonData(rivalPokemon.pokemon["url"])
-  // let rivalPokemonObj = {
-  //     rivalPokemon: rivalPokemon,
-  //     rivalPokemonData: rivalPokemonData,
-  //     rivalData: {
-  //         level: 1, //Math.floor(Math.random() * (level_p+1 - (level_p-1)) + level_p-1),
-  //         hp: 35,
-  //         maxhp: 35,
-  //     }
-  // }
-  localStorage.setItem("rivalPokemon", JSON.stringify(rivalPokemon));
+
+  localStorage.setItem(ENUM.RIVAL_POKEMON_KEY, JSON.stringify(rivalPokemon));
 
   // }
 };
@@ -118,17 +102,16 @@ const getPokemons = async (type) => {
 
 async function getMoves(moves, level) {
   const filteredMoves = moves.filter((moveobj) => {
-    // Check for a match in a single loop and return directly
     for (const detail of moveobj.version_group_details) {
       if (
         detail.level_learned_at === level ||
         detail.level_learned_at === level + 1 ||
         detail.level_learned_at === level - 1
       ) {
-        return true; // Move learned at this level or nearby level, include it
+        return true; 
       }
     }
-    return false; // No match found, exclude the move
+    return false; 
   });
 
   const moveDataPromises = filteredMoves.map(async (moveobj) => {
@@ -149,7 +132,6 @@ async function getMoves(moves, level) {
       }
       return null;
     } catch (error) {
-      // console.error("Error fetching move data:", error);
       return null;
     }
   });

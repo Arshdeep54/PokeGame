@@ -27,7 +27,6 @@ export class Table {
   }
 
   drawTabletop(context, x, y) {
-    // Draw the tabletop as a rectangle
     context.fillStyle = "yellow";
     context.fillRect(x, y, this.tableWidth, this.tableHeight);
   }
@@ -37,7 +36,7 @@ export class Table {
     context.fillRect(this.xpos, this.ypos, this.width, this.height);
 
     if (this.textTodisplay.length > 1) {
-      context.fillStyle = "black";
+      context.fillStyle = ENUM.COLORS.BLACK;
       let font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
       context.font = `${font} serif`;
       context.fillText(this.textTodisplay, this.xpos + 30, this.ypos + 30);

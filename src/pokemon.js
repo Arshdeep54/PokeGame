@@ -1,3 +1,5 @@
+import { ENUM } from "./types.js";
+
 export class Pokemon {
   constructor(xpos, ypos, isMine, width, height) {
     this.xpos = xpos;
@@ -8,8 +10,8 @@ export class Pokemon {
     this.image = new Image();
   }
   draw(context) {
-    let pokemonImage = JSON.parse(localStorage.getItem("pokemon"))[0].playerData.gifB
-    let rivalPokemonImage = JSON.parse(localStorage.getItem("rivalPokemon")).rivalData.gifF
+    let pokemonImage = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0].playerData.gifB
+    let rivalPokemonImage = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)).rivalData.gifF
 
     this.image.src = this.isMine ? pokemonImage : rivalPokemonImage;
     const pokImage = this.image;

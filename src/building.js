@@ -1,3 +1,5 @@
+import { ENUM } from "./types.js";
+
 export class Building {
   constructor(xpos, ypos, text, width, height, allowed, color, type) {
     this.xpos = xpos;
@@ -15,22 +17,19 @@ export class Building {
   }
   draw(context) {
     context.lineWidth = 10;
-    //Wall
 
     context.fillStyle = this.color;
-    context.fillRect(this.xpos, this.ypos, this.width, this.height); //x, y, width, height75,140,150,110
-    context.fillStyle = "#73544f";
+    context.fillRect(this.xpos, this.ypos, this.width, this.height); 
+    context.fillStyle = ENUM.COLORS.BUILDING_DOOR
 
-    //Door
     context.fillRect(
       this.doorx - this.doorw / 2,
       this.doory - this.doorh,
       this.doorw,
       this.doorh
-    ); //x, y, width, height
-    //Roof
-    context.fillStyle = "black";
-    context.font = "18px serif";
+    ); 
+    context.fillStyle = ENUM.COLORS.BLACK;
+    context.font = "1.2rem serif";
     let textWidth = context.measureText(this.text).width;
     context.fillText(
       this.text,
@@ -38,11 +37,11 @@ export class Building {
       this.ypos + 25
     );
     context.beginPath();
-    context.moveTo(this.xpos - this.width / 6, this.ypos); // left most point
-    context.lineTo(this.doorx, this.ypos - this.height / 2.5); // line to top point
-    context.lineTo(this.xpos + this.width + this.width / 6, this.ypos); //line to right most point
-    context.closePath(); // links starting point and end points
-    context.stroke(); // adds a stroke to the invisible path
+    context.moveTo(this.xpos - this.width / 6, this.ypos);
+    context.lineTo(this.doorx, this.ypos - this.height / 2.5); 
+    context.lineTo(this.xpos + this.width + this.width / 6, this.ypos);
+    context.closePath(); 
+    context.stroke(); 
     context.fill();
   }
 }

@@ -1,3 +1,4 @@
+import { ENUM } from "./types.js";
 import {
   getCenterMap,
   getHouseMap,
@@ -5,20 +6,6 @@ import {
   getMartMap,
   getOakMap,
 } from "./utils.js";
-
-const ENUM = {
-  OAK: "OAK",
-  INITIAL: "initial",
-  HOUSE: "House",
-  GET_FROM_OAK: "Get one from Prof oak",
-  CENTER: "Center",
-  MART: "Mart",
-  NO_POKEMON: "You don't have any pokemon",
-  PRESS_ENTER: "Press Enter to Enter the ",
-  BG_COLOR: "#6ece67",
-  EMPTY_STRING: " ",
-  BATTLE: "battle",
-};
 
 export class Player {
   constructor(xpos, ypos, width, height, color, ctx, textToDisplay) {
@@ -31,8 +18,7 @@ export class Player {
     this.lastMove = "front";
     this.ctx = ctx;
     this.isAllowedInGrass =
-      JSON.parse(localStorage.getItem("pokemon")).length == 1;
-    // this.isAllowedInGrass = true
+      JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY)).length == 1;
     this.inGrass = null;
     this.entered = null;
     this.enterPressed = false;
@@ -67,7 +53,6 @@ export class Player {
   }
   draw() {
     const currentImage = this.images[this.getDirection()];
-    // this.ctx.fillRect(this.xpos,this.ypos,this.width,this.height)
     if (currentImage.complete) {
       this.ctx.drawImage(
         currentImage,
@@ -80,7 +65,6 @@ export class Player {
       console.warn(
         `Player image for direction ${this.getDirection()} not loaded yet`
       );
-      // Draw a placeholder image here while the main image loads
       const imagee = new Image();
       imagee.src = "./assets/images/playerb.png";
       imagee.onload = () => {
@@ -96,7 +80,6 @@ export class Player {
   }
 
   getDirection() {
-    // //console.log("getdirection called", this.lastMove)
     return this.lastMove;
   }
   handleKeyDown(event) {
@@ -116,7 +99,6 @@ export class Player {
         break;
       case "ArrowDown":
         this.lastMove = "front";
-        //console.log("front")
         this.moveDown();
         break;
       case "Enter":
@@ -128,22 +110,24 @@ export class Player {
         ) {
           this.enterPressed = true;
           this.xpos = canvas.width / 2;
-          // this.ypos=getMap()["buildings"][1].ypos+20
-        } else if (this.textToDisplay == "table" && this.mapin == ENUM.OAK) {
+        } else if (this.textToDisplay == ENUM.TABLE && this.mapin == ENUM.OAK) {
           this.ballSelecting = true;
-        } else if (this.textToDisplay == "table" && this.mapin == ENUM.CENTER) {
+        } else if (
+          this.textToDisplay == ENUM.TABLE &&
+          this.mapin == ENUM.CENTER
+        ) {
           this.healingTable = true;
-          let pokemons = JSON.parse(localStorage.getItem("pokemon"));
+          let pokemons = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
           let newPokemonArray = [];
           for (const pokemon of pokemons) {
             pokemon.playerData.currenthp = pokemon.playerData.maxhp;
             newPokemonArray.push(pokemon);
           }
-          localStorage.setItem("pokemon", JSON.stringify(newPokemonArray));
+          localStorage.setItem(
+            ENUM.POKEMON_KEY,
+            JSON.stringify(newPokemonArray)
+          );
           this.textToDisplay = "Your Pokemons are healed";
-          //console.log(
-          // newPokemonArray
-          // );
         }
         break;
       default:
@@ -153,18 +137,14 @@ export class Player {
   }
   moveLeft() {
     this.xpos -= this.speed;
-    //console.log("leftttt")
     if (this.handleCollisions()) {
-      //console.log("leftttttttttttttttttttttt")
       this.xpos += this.speed;
     }
   }
 
   moveRight() {
     this.xpos += this.speed;
-    //console.log("rigthtt")
     if (this.handleCollisions()) {
-      //console.log("rigthttttttttttttttttttttttt")
       this.xpos -= this.speed;
     }
   }
@@ -183,16 +163,13 @@ export class Player {
     }
   }
 
-  // Check collisions with buildings and trees
   handleCollisions() {
     if (this.mapin == ENUM.INITIAL) {
-      const map = getMap(); // Replace with your map data structure
+      const map = getMap();
       for (const buildingType in map) {
-        // //console.log(buildingType)
         if (buildingType != "grasses" && buildingType != "roads") {
           for (const building of map[buildingType]) {
             if (this.collidesWith(building)) {
-              // //console.log("collided with " + building)
               this.textToDisplay = building.text;
               return true;
             } else {
@@ -202,10 +179,7 @@ export class Player {
         } else if (buildingType === "grasses") {
           for (const building of map[buildingType]) {
             if (this.collidesWith(building)) {
-              // //console.log(this.isAllowedInGrass, "allowed",JSON.parse(localStorage.getItem("pokemon")));
-              // this.isAllowedInGrass=(localStorage.getItem("pokemon").length ==1)
               if (this.isAllowedInGrass) {
-                // //console.log(building)
                 this.inGrass = building;
                 this.textToDisplay = ENUM.EMPTY_STRING;
               } else {
@@ -227,13 +201,10 @@ export class Player {
           for (const building of oakmap[buildingType]) {
             if (building.text == ENUM.OAK) {
               if (this.collidesFromInside(building)) {
-                // //console.log(building);
-                // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;
               } else {
                 this.textToDisplay = ENUM.EMPTY_STRING;
-                // //console.log("not colliding")
               }
             } else {
               if (this.collidesWith(building)) {
@@ -241,8 +212,8 @@ export class Player {
                   this.enterPressed = false;
                   this.mapin = ENUM.INITIAL;
                   this.xpos = getMap()["buildings"][1].doorx;
-                  this.ypos = getMap()["buildings"][1].doory;                }
-                // //console.log("collided with " + building)
+                  this.ypos = getMap()["buildings"][1].doory;
+                }
                 this.textToDisplay = building.text;
                 return true;
               } else {
@@ -253,12 +224,10 @@ export class Player {
           }
         } else {
           for (const building of oakmap[buildingType]) {
-            // //console.log(building)
             if (this.collidesWith(building)) {
-              if (building.text == "table") {
+              if (building.text == ENUM.TABLE) {
                 this.collidingTable = true;
               }
-              // //console.log("collided with " + building)
               this.textToDisplay = building.text;
               return true;
             } else {
@@ -269,7 +238,6 @@ export class Player {
         }
       }
     } else if (this.mapin == ENUM.CENTER) {
-      //console.log("in center ");
       const centerMap = getCenterMap();
 
       for (const buildingType in centerMap) {
@@ -277,39 +245,30 @@ export class Player {
           for (const building of centerMap[buildingType]) {
             if (building.text == ENUM.CENTER) {
               if (this.collidesFromInside(building)) {
-                //console.log(building);
-                // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;
               } else {
                 this.textToDisplay = ENUM.EMPTY_STRING;
-                //console.log("not colliding 222")
               }
             } else {
               if (this.collidesWith(building)) {
-                // if (building.text == "door") {
                 this.enterPressed = false;
                 this.mapin = ENUM.INITIAL;
                 this.xpos = getMap()["buildings"][3].doorx;
                 this.ypos = getMap()["buildings"][3].doory;
-                // }
-                // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;
               } else {
                 this.textToDisplay = ENUM.EMPTY_STRING;
-                //console.log("not colliding")
               }
             }
           }
         } else {
           for (const building of centerMap[buildingType]) {
-            // //console.log(building)
             if (this.collidesWith(building)) {
-              if (building.text == "table") {
+              if (building.text == ENUM.TABLE) {
                 this.healingTable = true;
               }
-              // //console.log("collided with " + building)
               this.textToDisplay = building.text;
               return true;
             } else {
@@ -320,7 +279,6 @@ export class Player {
         }
       }
     } else if (this.mapin == ENUM.MART) {
-      //console.log("in Mart ");
       const martMap = getMartMap();
 
       for (const buildingType in martMap) {
@@ -328,34 +286,27 @@ export class Player {
           for (const building of martMap[buildingType]) {
             if (building.text == ENUM.MART) {
               if (this.collidesFromInside(building)) {
-                //console.log(building);
-                // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;
               } else {
                 this.textToDisplay = ENUM.EMPTY_STRING;
-                //console.log("not colliding 222")
               }
             } else {
               if (this.collidesWith(building)) {
-                // if (building.text == "door") {
                 this.enterPressed = false;
                 this.mapin = ENUM.INITIAL;
                 this.xpos = getMap()["buildings"][2].doorx;
                 this.ypos = getMap()["buildings"][2].doory; // }
-                // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;
               } else {
                 this.textToDisplay = ENUM.EMPTY_STRING;
-                //console.log("not colliding")
               }
             }
           }
         }
       }
     } else if (this.mapin == ENUM.HOUSE) {
-      //console.log("in House ");
       const houseMap = getHouseMap();
 
       for (const buildingType in houseMap) {
@@ -363,32 +314,21 @@ export class Player {
           for (const building of houseMap[buildingType]) {
             if (building.text == ENUM.HOUSE) {
               if (this.collidesFromInside(building)) {
-                //console.log(building);
-                // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;
               } else {
                 this.textToDisplay = ENUM.EMPTY_STRING;
-                //console.log("not colliding 222")
               }
             } else {
               if (this.collidesWith(building)) {
-                // if (building.text == "door") {
                 this.enterPressed = false;
                 this.mapin = ENUM.INITIAL;
                 this.xpos = getMap()["buildings"][0].doorx;
                 this.ypos = getMap()["buildings"][0].doory;
-                // console.log(
-                //   getMap()["buildings"][0].xpos - this.width,
-                //   getMap()["buildings"][0]
-                // );
-                // }
-                // //console.log("collided with " + building)
                 this.textToDisplay = building.text;
                 return true;
               } else {
                 this.textToDisplay = ENUM.EMPTY_STRING;
-                //console.log("not colliding")
               }
             }
           }
@@ -422,7 +362,6 @@ export class Player {
     );
   }
 
-  // Adjust player position after collision (can be refined)
   adjustPositionAfterCollision(obj) {
     if (this.xpos < obj.xpos) {
       this.xpos = obj.xpos + obj.width;
@@ -435,6 +374,6 @@ export class Player {
     }
   }
   update() {
-    this.draw(); // Draw after movement logic is processed
+    this.draw(); 
   }
 }

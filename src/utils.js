@@ -129,7 +129,6 @@ export function getMap() {
       ),
     ],
     trees: [
-      // new TreeField(6, 3, 700, 0),
       new TreeField(
         Math.ceil(canvas.width / (4 * constants.trees.tree_width)),
         Math.ceil(constants.house.ypos / constants.trees.tree_height),
@@ -209,7 +208,7 @@ export function getMap() {
         constants.house.width,
         constants.house.height,
         true,
-        "#b0ccd5",
+        ENUM.COLORS.BUILDING,
         ENUM.HOUSE
       ),
       new Building(
@@ -219,7 +218,7 @@ export function getMap() {
         constants.house.width,
         constants.house.height,
         true,
-        "#b0ccd5",
+        ENUM.COLORS.BUILDING,
         ENUM.HOUSE
       ),
       new Building(
@@ -229,7 +228,7 @@ export function getMap() {
         constants.house.width,
         constants.house.height,
         true,
-        "#b0ccd5",
+        ENUM.COLORS.BUILDING,
         ENUM.MART
       ),
       new Building(
@@ -239,13 +238,11 @@ export function getMap() {
         constants.house.width,
         constants.house.height,
         true,
-        "#b0ccd5",
+        ENUM.COLORS.BUILDING,
         ENUM.CENTER
       ),
     ],
     fences: [
-      // new Fence(constants.house.xpos-constants.fence.width-25,100,20,200,true),
-      // new Fence(constants.house.xpos-constants.fence.width-25,100,200,20,false),
       new Fence(0, 0, canvas.width, constants.fence.width, false, "fence"),
       new Fence(0, 0, constants.fence.width, canvas.height, true, "fence"),
       new Fence(
@@ -330,14 +327,14 @@ export function getOakMap() {
         100,
         200,
         100,
-        "table",
+        ENUM.TABLE,
         ENUM.EMPTY_STRING
       ),
     ],
     balls: [
       new Ball(tablexpos + 40, tableypos + 40, 20, "blue"),
       new Ball(tablexpos + 100, tableypos + 40, 20, "yellow"),
-      new Ball(tablexpos + 160, tableypos + 40, 20, "black"),
+      new Ball(tablexpos + 160, tableypos + 40, 20, ENUM.COLORS.BLACK),
     ],
   };
 }
@@ -371,7 +368,7 @@ export function getCenterMap() {
         100,
         200,
         100,
-        "table",
+        ENUM.TABLE,
         "Healing Table"
       ),
     ],
@@ -434,7 +431,7 @@ export function getMartMap() {
         canvas.height / 2 - 250,
         500,
         500,
-        "#4B4FBD",
+        ENUM.COLORS.HOUSE,
         ENUM.MART
       ),
       new Rectangle(
@@ -456,7 +453,7 @@ export function getHouseMap() {
         canvas.height / 2 - 250,
         500,
         500,
-        "#4B4FBD",
+        ENUM.COLORS.HOUSE,
         ENUM.HOUSE
       ),
       new Rectangle(

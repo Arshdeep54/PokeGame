@@ -30,7 +30,6 @@ export class TextBox {
       right2: this.xpos + (107 * this.width) / 100,
       bottom: this.ypos + (70 / 18) * ((18 * this.height) / 100),
     };
-    // console.log((107 * this.width) / 100, (16 * this.height) / 100);
     this.options = {
       battleOptions: [
         {
@@ -86,8 +85,7 @@ export class TextBox {
     };
   }
   async loadMoves() {
-    this.moves = JSON.parse(localStorage.getItem("pokemon"))[0].validMoves;
-    // console.log(this.moves);
+    this.moves = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0].validMoves;
     this.options.fightOptions.forEach((fightOption, index) => {
       if (this.moves.length > index) {
         fightOption.option = this.moves[index].move;
@@ -98,14 +96,14 @@ export class TextBox {
   }
   draw() {
     this.context.lineWidth = 10;
-    this.context.fillStyle = "#b0aaaa";
+    this.context.fillStyle = ENUM.COLORS.TEXTBOX;
     this.context.fillRect(
       this.xpos,
       this.ypos,
       this.inBattle ? this.width + 100 : this.width,
       this.height
     );
-    this.context.fillStyle = "black";
+    this.context.fillStyle = ENUM.COLORS.BLACK;
     let font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
     this.context.font = `${font} serif`;
     
@@ -127,13 +125,10 @@ export class TextBox {
         !this.showBattleOptions && this.selectedBattleOption.option == "Fight"
           ? this.options.fightOptions
           : this.options.battleOptions;
-      // //console.log(options);
-      // this.cursor.x = this.selectedOption ? this.xpos + 20 : this.cornerp.left - 15;
       this.context.fillText(">", this.cursor.x, this.cursor.y);
       options.map((option) =>
         this.context.fillText(option.option, option.xpos, option.ypos)
       );
-      // console.log("option",options[0].xpos, options[0].ypos);
     }
     if (this.inBattle && this.movedone) {
       this.context.fillText(
@@ -187,7 +182,6 @@ export class TextBox {
         }
         break;
       case "Enter":
-        //console.log(this.cursor.x, this.cursor.y, this.xpos);
         if (!this.battledone) {
           if (this.showBattleOptions && !this.movedone) {
             this.selectedBattleOption = this.options.battleOptions.find(
@@ -195,12 +189,11 @@ export class TextBox {
                 option.xpos - (3.75 * this.width) / 100 === this.cursor.x &&
                 option.ypos === this.cursor.y
             );
-            //console.log(this.selectedBattleOption);
             if (this.selectedBattleOption.option == "Run") {
               this.battledone = true;
               this.inBattle = false;
               this.isTlistening = false;
-              this.mapin = "initial";
+              this.mapin = ENUM.INITIAL;
               return;
             }
             if (this.selectedBattleOption.option == "Fight")
@@ -211,7 +204,6 @@ export class TextBox {
                 option.xpos - (3.75 * this.width) / 100 === this.cursor.x &&
                 option.ypos === this.cursor.y
             );
-            // console.log(smove);
             if (smove.option != ".....") {
               this.selectedMove = this.moves.find(
                 (move) => move.move === smove.option
@@ -226,17 +218,14 @@ export class TextBox {
               console.log(this.selectedMove);
             }
           }
-
-          // //console.log(option.xpos - 15, this.cursor.x, option.ypos, this.cursor.y);
           this.cursor.x = this.showBattleOptions
             ? this.cornerp.left2 - (3.75 * this.width) / 100
             : this.cornerp.left1 - (3.75 * this.width) / 100;
           this.inBattle = true;
         } else {
-          //console.log("battle ended ");
           this.inBattle = false;
           this.isTlistening = false;
-          this.mapin = "initial";
+          this.mapin = ENUM.INITIAL;
         }
         break;
       default:

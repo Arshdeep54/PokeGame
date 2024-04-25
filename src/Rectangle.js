@@ -11,22 +11,19 @@ export class Rectangle {
     this.text = text;
   }
   draw(context) {
-    // //console.log(this.text);
     context.fillStyle = this.color;
     context.fillRect(this.xpos, this.ypos, this.width, this.height);
     if (this.text == ENUM.MART) {
-      //console.log("drawing text");
       let instructions = "Nothing here";
-      context.fillStyle = "black";
+      context.fillStyle = ENUM.COLORS.BLACK;
       let font=isMobileOrTablet()?ENUM.FONT_MOBILE:ENUM.FONT_DESKTOP
       context.font = `${font} serif`;
       context.fillText(instructions, this.xpos + 230, this.ypos + 50, 400, 400);
     }
     if (this.text == ENUM.HOUSE) {
-      context.fillStyle = "black";
+      context.fillStyle = ENUM.COLORS.BLACK;
       let font=isMobileOrTablet()?ENUM.FONT_MOBILE:ENUM.FONT_DESKTOP
       context.font = `${font} serif`;
-      //console.log("in house ");
       context.fillText(
         "Will add instructions here ,check console for now  ",
         this.xpos + 50,
