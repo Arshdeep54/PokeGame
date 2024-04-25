@@ -22,7 +22,7 @@ export function isMobileOrTablet() {
   return navigationTest || screenWidth<mobileBreakpoint
 }
 export function getMap() {
-  let constants = {
+  var constants = {
     house: {
       xpos: canvas.width / 20,
       ypos: canvas.height / 4,
@@ -46,21 +46,21 @@ export function getMap() {
       width: 12,
     },
     trees: {
-      tree_height: 36,
-      tree_width: 26,
+      treeHeight: 36,
+      treeWidth: 26,
     },
     road: {
       width: 100,
     },
     grass: {
-      grass_width: 30,
-      grass_height: 12,
+      grassWidth: 30,
+      grassHeight: 12,
     },
   };
   return {
     grasses: [
       new GrassField(
-        Math.ceil(canvas.width / (3 * constants.grass.grass_width)),
+        Math.ceil(canvas.width / (3 * constants.grass.grassWidth)),
         Math.ceil(
           canvas.height -
             constants.oak.ypos -
@@ -78,9 +78,9 @@ export function getMap() {
       new GrassField(
         Math.ceil(
           (canvas.width / 3 + constants.road.width) /
-            constants.grass.grass_width
+            constants.grass.grassWidth
         ),
-        Math.ceil(canvas.height / (6 * constants.grass.grass_height)),
+        Math.ceil(canvas.height / (6 * constants.grass.grassHeight)),
         constants.fence.width + canvas.width / 4 + constants.road.width,
         0
       ),
@@ -134,21 +134,21 @@ export function getMap() {
     ],
     trees: [
       new TreeField(
-        Math.ceil(canvas.width / (4 * constants.trees.tree_width)),
-        Math.ceil(constants.house.ypos / constants.trees.tree_height),
+        Math.ceil(canvas.width / (4 * constants.trees.treeWidth)),
+        Math.ceil(constants.house.ypos / constants.trees.treeHeight),
         constants.fence.width,
         constants.fence.width
       ),
       new TreeField(
         1,
-        Math.floor(constants.house.height / constants.trees.tree_height),
+        Math.floor(constants.house.height / constants.trees.treeHeight),
         constants.fence.width + canvas.width / 4 + constants.road.width,
         constants.oak.ypos
       ),
       new TreeField(
-        Math.ceil(canvas.width / (4 * constants.trees.tree_width)),
+        Math.ceil(canvas.width / (4 * constants.trees.treeWidth)),
         Math.ceil(
-          (constants.oak.ypos - canvas.height / 6) / constants.trees.tree_height
+          (constants.oak.ypos - canvas.height / 6) / constants.trees.treeHeight
         ),
         constants.fence.width + canvas.width / 4 + constants.road.width,
         canvas.height / 6
@@ -159,7 +159,7 @@ export function getMap() {
             constants.fence.width -
             canvas.width / 4 -
             constants.road.width) /
-            constants.trees.tree_width
+            constants.trees.treeWidth
         ),
         1,
         constants.fence.width + canvas.width / 4 + constants.road.width,
@@ -173,14 +173,14 @@ export function getMap() {
               canvas.width / 4 +
               canvas.width / 3 +
               constants.road.width)) /
-            constants.trees.tree_width
+            constants.trees.treeWidth
         ),
         Math.ceil(
           (canvas.height -
             (constants.center.ypos +
               constants.house.height +
               constants.road.width)) /
-            constants.trees.tree_height
+            constants.trees.treeHeight
         ),
         constants.fence.width +
           constants.road.width +
@@ -191,14 +191,14 @@ export function getMap() {
       ),
       new TreeField(
         Math.ceil(
-          (constants.road.width + canvas.width / 4) / constants.trees.tree_width
+          (constants.road.width + canvas.width / 4) / constants.trees.treeWidth
         ),
         Math.ceil(
           (canvas.height -
             (constants.center.ypos +
               constants.house.height +
               constants.road.width)) /
-            constants.trees.tree_height
+            constants.trees.treeHeight
         ),
         constants.fence.width,
         canvas.height / 1.3 + constants.fence.width
@@ -296,14 +296,14 @@ export function getMap() {
         canvas.width / 4 - 100,
         canvas.height -
           (canvas.height / 1.3 + constants.fence.width) -
-          constants.trees.tree_height
+          constants.trees.treeHeight
       ),
     ],
   };
 }
 export function getOakMap() {
-  let tablexpos = canvas.width / 2;
-  let tableypos = canvas.height / 2 - 200;
+  var tablexpos = canvas.width / 2;
+  var tableypos = canvas.height / 2 - 200;
   return {
     rectangles: [
       new Rectangle(
@@ -343,8 +343,8 @@ export function getOakMap() {
   };
 }
 export function getCenterMap() {
-  let tablexpos = canvas.width / 2 - 100;
-  let tableypos = canvas.height / 2 - 200;
+  var tablexpos = canvas.width / 2 - 100;
+  var tableypos = canvas.height / 2 - 200;
   return {
     rectangles: [
       new Rectangle(

@@ -1,5 +1,5 @@
 import { ENUM } from "./types.js";
-import { isMobileOrTablet } from "./utils.js";
+import { isMobileOrTablet} from "./utils.js";
 
 export class Rectangle {
   constructor(xpos, ypos, width, height, color, text) {
@@ -14,15 +14,15 @@ export class Rectangle {
     context.fillStyle = this.color;
     context.fillRect(this.xpos, this.ypos, this.width, this.height);
     if (this.text == ENUM.MART) {
-      let instructions = "Nothing here";
+      var instructions = "Nothing here";
       context.fillStyle = ENUM.COLORS.BLACK;
-      let font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
+      var font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
       context.font = `${font} serif`;
       context.fillText(instructions, this.xpos + 230, this.ypos + 50, 400, 400);
     }
     if (this.text == ENUM.HOUSE) {
       context.fillStyle = ENUM.COLORS.BLACK;
-      let font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
+      var font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
       context.font = `${font} serif`;
       context.fillText(
         "Will add instructions here ,check console for now  ",

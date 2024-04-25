@@ -3,30 +3,30 @@ import { ENUM } from "./types.js";
 export const getRandomPokemon = async () => {
   const pokemons = await getPokemons("grass");
 
-  let pokemon = await getslot(pokemons, 1, true, 1);
+  var pokemon = await getslot(pokemons, 1, true, 1);
 
   if (JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY)).length == 0) {
-    let pokemonArray = [pokemon];
+    var pokemonArray = [pokemon];
     localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemonArray));
   }
 };
 const getslot = async (pokemons, isMine, level) => {
   const max = pokemons.length;
   const min = 0;
-  let random = Math.floor(Math.random() * (max - min) + min);
+  var random = Math.floor(Math.random() * (max - min) + min);
 
-  let pokemonData = await getPokemonData(pokemons[random].pokemon.url);
+  var pokemonData = await getPokemonData(pokemons[random].pokemon.url);
 
-  let showdownImagef = pokemonData.sprites.other.showdown.front_default;
-  let showdownImageb = pokemonData.sprites.other.showdown.back_default;
+  var showdownImagef = pokemonData.sprites.other.showdown.front_default;
+  var showdownImageb = pokemonData.sprites.other.showdown.back_default;
   if (pokemonData.moves.length == 0) {
     await getslot(pokemons, isMine, level);
   }
   if (showdownImagef == null && showdownImageb == null) {
     await getslot(pokemons, isMine, level);
   }
-  let pokemon;
-  let validMoves = await getMoves(pokemonData.moves, level);
+  var pokemon;
+  var validMoves = await getMoves(pokemonData.moves, level);
   if (validMoves.length == 0) {
     await getslot(pokemons, isMine, level);
   }
@@ -74,9 +74,9 @@ const getPokemonData = async (url) => {
 
 export const generateRivalPok = async () => {
   const pokemons = await getPokemons("grass");
-  let player_pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-  let level_p = player_pokemon[0].playerData.level;
-  let rivalPokemon = await getslot(pokemons, false, level_p + 1);
+  var player_pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+  var level_p = player_pokemon[0].playerData.level;
+  var rivalPokemon = await getslot(pokemons, false, level_p + 1);
 
   localStorage.setItem(ENUM.RIVAL_POKEMON_KEY, JSON.stringify(rivalPokemon));
 

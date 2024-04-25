@@ -17,10 +17,10 @@ export class TreeField {
   draw(context) {
     const treeImage = this.tree;
     if (treeImage.complete) {
-      for (let i = 0; i < this.y; i++) {
-        let y = this.ypos + i * 32;
-        for (let j = 0; j < this.x; j++) {
-          let x = this.xpos + j * 24;
+      for (var i = 0; i < this.y; i++) {
+        var y = this.ypos + i * 32;
+        for (var j = 0; j < this.x; j++) {
+          var x = this.xpos + j * 24;
           context.fillStyle = ENUM.COLORS.BLACK;
           context.drawImage(treeImage, x, y, this.widthT, this.heightT);
         }

@@ -10,9 +10,9 @@ export class Pokemon {
     this.image = new Image();
   }
   draw(context) {
-    let pokemonImage = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0]
+    var pokemonImage = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0]
       .playerData.gifB;
-    let rivalPokemonImage = JSON.parse(
+    var rivalPokemonImage = JSON.parse(
       localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)
     ).rivalData.gifF;
 

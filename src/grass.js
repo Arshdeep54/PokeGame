@@ -14,10 +14,10 @@ export class GrassField {
   draw(context) {
     const grassImage = this.grass;
     if (grassImage.complete) {
-      for (let i = 0; i < this.y; i++) {
-        let y = this.ypos + i * 12;
-        for (let j = 0; j < this.x; j++) {
-          let x = this.xpos + j * 30;
+      for (var i = 0; i < this.y; i++) {
+        var y = this.ypos + i * 12;
+        for (var j = 0; j < this.x; j++) {
+          var x = this.xpos + j * 30;
           context.fillStyle = "green";
           context.drawImage(grassImage, x, y, this.widthG, this.heightG);
         }

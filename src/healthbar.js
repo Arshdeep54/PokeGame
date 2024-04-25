@@ -65,23 +65,23 @@ export class Healthbar {
     context.fillStyle = ENUM.COLORS.BLACK;
     context.lineWidth = 1;
     context.strokeRect(this.xpos + 50, this.ypos + 40, this.totalbarwidth, 6);
-    let hpfill = (this.hp / this.maxhp) * this.totalbarwidth;
+    var hpfill = (this.hp / this.maxhp) * this.totalbarwidth;
     if (hpfill > this.totalbarwidth) {
       hpfill = this.totalbarwidth;
     }
     context.fillRect(this.xpos + 50, this.ypos + 40, hpfill, 6);
-    let hpstring = this.hp?.toString() + "/" + this.maxhp.toString();
+    var hpstring = this.hp?.toString() + "/" + this.maxhp.toString();
     context.fillText(hpstring, this.xpos + this.width - 60, this.ypos + 65);
     if (this.isMine) {
       context.fillText("XP ", this.xpos + 20, this.ypos + 90);
       context.fillStyle = ENUM.COLORS.BLACK;
       context.lineWidth = 1;
       context.strokeRect(this.xpos + 50, this.ypos + 80, this.totalbarwidth, 6);
-      let xpfill = (this.exp / this.expforNextlevel) * this.totalbarwidth;
+      var xpfill = (this.exp / this.expforNextlevel) * this.totalbarwidth;
       if (xpfill > this.totalbarwidth) {
-        let diff = xpfill - this.totalbarwidth;
+        var diff = xpfill - this.totalbarwidth;
         this.exp = diff;
-        let pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+        var pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
         pokemon[0].playerData.exp = diff;
         pokemon[0].playerData.level = pokemon[0].playerData.level + 1;
         this.level = pokemon[0].playerData.level;

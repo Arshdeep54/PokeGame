@@ -117,8 +117,8 @@ export class Player {
           this.mapin == ENUM.CENTER
         ) {
           this.healingTable = true;
-          let pokemons = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-          let newPokemonArray = [];
+          var pokemons = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+          var newPokemonArray = [];
           for (const pokemon of pokemons) {
             pokemon.playerData.currenthp = pokemon.playerData.maxhp;
             newPokemonArray.push(pokemon);

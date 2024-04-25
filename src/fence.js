@@ -11,8 +11,8 @@ export class Fence {
   draw(context) {
     context.lineWidth = 2;
     context.fillStyle = this.color;
-    let distance = 10;
-    let max_rods =
+    var distance = 10;
+    var maxRods =
       Math.floor(this.vertical ? this.height : this.width) / distance;
     if (this.vertical) {
       context.beginPath();
@@ -23,7 +23,7 @@ export class Fence {
       context.moveTo(this.xpos, this.ypos + this.height / 2);
       context.lineTo(this.xpos + this.width, this.ypos + this.height / 2);
       context.stroke();
-      for (let i = 1; i <= max_rods; i++) {
+      for (var i = 1; i <= maxRods; i++) {
         context.beginPath();
         context.moveTo(this.xpos, this.ypos + distance * i);
         context.lineTo(this.xpos + this.width, this.ypos + distance * i);
@@ -34,7 +34,7 @@ export class Fence {
       context.moveTo(this.xpos, this.ypos + this.height / 2);
       context.lineTo(this.xpos + this.width, this.ypos + this.height / 2);
       context.stroke();
-      for (let i = 1; i <= max_rods; i++) {
+      for (var i = 1; i <= maxRods; i++) {
         context.beginPath();
         context.moveTo(this.xpos + distance * i, this.ypos);
         context.lineTo(this.xpos + distance * i, this.ypos + this.height);

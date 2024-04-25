@@ -1,5 +1,5 @@
 import { ENUM } from "./types.js";
-import { isMobileOrTablet } from "./utils.js";
+import { isMobileOrTablet} from "./utils.js";
 
 export class TextBox {
   constructor(text, xpos, ypos, width, height, context) {
@@ -106,7 +106,7 @@ export class TextBox {
       this.height
     );
     this.context.fillStyle = ENUM.COLORS.BLACK;
-    let font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
+    var font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
     this.context.font = `${font} serif`;
 
     this.context.fillText(
@@ -200,7 +200,7 @@ export class TextBox {
             if (this.selectedBattleOption.option == "Fight")
               this.showBattleOptions = false;
           } else {
-            let smove = this.options.fightOptions.find(
+            var smove = this.options.fightOptions.find(
               (option) =>
                 option.xpos - (3.75 * this.width) / 100 === this.cursor.x &&
                 option.ypos === this.cursor.y
@@ -213,10 +213,8 @@ export class TextBox {
                 this.battleStatus == null
                   ? "You chose " + this.selectedMove.move
                   : " ";
-              console.log(this.chosenText);
               this.showBattleOptions = true;
               this.movedone = true;
-              console.log(this.selectedMove);
             }
           }
           this.cursor.x = this.showBattleOptions

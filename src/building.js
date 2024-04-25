@@ -30,7 +30,7 @@ export class Building {
     );
     context.fillStyle = ENUM.COLORS.BLACK;
     context.font = "1.2rem serif";
-    let textWidth = context.measureText(this.text).width;
+    var textWidth = context.measureText(this.text).width;
     context.fillText(
       this.text,
       this.xpos + (this.width - textWidth) / 2,

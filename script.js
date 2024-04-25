@@ -53,14 +53,14 @@ enterBtn.addEventListener("click", (event) => {
   );
 });
 const canvas = document.querySelector("canvas");
-let context = canvas.getContext("2d");
+const context = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-let rivalPokemon = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY));
-let textToDisplay = ENUM.EMPTY_STRING;
+var pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+var rivalPokemon = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY));
+var textToDisplay = ENUM.EMPTY_STRING;
 if (localStorage.getItem(ENUM.POKEMON_KEY) === null) {
   localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify([]));
 }
@@ -83,8 +83,8 @@ console.log(
   "After war ends , get to the center ,touch the table ,press enter to heal your pokemon"
 );
 
-let rivalPokemonXpos = null;
-let rivalTurn = false;
+var rivalPokemonXpos = null;
+var rivalTurn = false;
 
 const player = new Player(1100, 350, 40, 60, "blue", context, textToDisplay);
 const textBox = new TextBox(
@@ -95,15 +95,15 @@ const textBox = new TextBox(
   canvas.height / 8,
   context
 );
-let encounteredInCurrentGrass = false;
-let encouteredinCenter = false;
-let imap = getMap();
-let map = player.mapin;
-let oakMap = getOakMap();
-let battleMap = getBattleMap();
-let centerMap = getCenterMap();
-let martMap = getMartMap();
-let houseMap = getHouseMap();
+var encounteredInCurrentGrass = false;
+var encouteredinCenter = false;
+var imap = getMap();
+var map = player.mapin;
+var oakMap = getOakMap();
+var battleMap = getBattleMap();
+var centerMap = getCenterMap();
+var martMap = getMartMap();
+var houseMap = getHouseMap();
 player.xpos = getMap().buildings[0].doorx;
 player.ypos = getMap().buildings[0].doory + 10;
 player.width = isMobileOrTablet() ? 30 : 40;
@@ -124,14 +124,14 @@ async function handleBattle() {
     textBox.isTlistening = true;
 
     if (textBox.selectedMove != null) {
-      let attack_change = textBox.selectedMove.power;
+      var attackChange = textBox.selectedMove.power;
 
       rivalPokemon = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY));
-      let level = rivalPokemon.rivalData.level;
-      let hp = rivalPokemon.rivalData.hp;
+      var level = rivalPokemon.rivalData.level;
+      var hp = rivalPokemon.rivalData.hp;
 
       if (hp > 0) {
-        rivalPokemon.rivalData.hp = rivalPokemon.rivalData.hp - attack_change;
+        rivalPokemon.rivalData.hp = rivalPokemon.rivalData.hp - attackChange;
         localStorage.setItem(
           ENUM.RIVAL_POKEMON_KEY,
           JSON.stringify(rivalPokemon)
@@ -158,15 +158,15 @@ async function handleBattle() {
   }
 }
 async function rivalAttacks() {
-  let moves = JSON.parse(
+  var moves = JSON.parse(
     localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)
   ).validMoves;
-  let random = Math.floor(Math.random() * moves.length);
-  let lrandomMove = {
+  var random = Math.floor(Math.random() * moves.length);
+  var lrandomMove = {
     name: random,
     power: 20,
   };
-  let randomMove = moves
+  var randomMove = moves
     ? moves.length > 0
       ? moves[random]
       : lrandomMove
@@ -176,14 +176,14 @@ async function rivalAttacks() {
   textBox.showBattleOptions = true;
   textBox.movedone = true;
 
-  let attack_change = randomMove.power;
+  var attackChange = randomMove.power;
 
   pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-  let level = pokemon[0].playerData.level;
-  let hp = pokemon[0].playerData.currenthp;
+  var level = pokemon[0].playerData.level;
+  var hp = pokemon[0].playerData.currenthp;
   if (hp > 0) {
     pokemon[0].playerData.currenthp =
-      pokemon[0].playerData.currenthp - attack_change;
+      pokemon[0].playerData.currenthp - attackChange;
     localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemon));
   }
   pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
@@ -274,7 +274,7 @@ async function handleEnterPressed() {
 }
 function draw() {
   map = player.mapin;
-  let maptoRender;
+  var maptoRender;
   if (map === ENUM.INITIAL) {
     maptoRender = imap;
   } else if (map === ENUM.OAK) {
@@ -398,7 +398,7 @@ async function gameLoop() {
     player.collidingTable &&
     !player.isAllowedInGrass
   ) {
-    for (let i = 0; i < 3; i++) {
+    for (var i = 0; i < 3; i++) {
       if (
         player.xpos >
           getOakMap()[ENUM.BALLS][i].xpos - getOakMap()[ENUM.BALLS][i].radius &&
