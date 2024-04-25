@@ -1,5 +1,5 @@
 import { Player } from "./src/player.js";
-import { generateRivalPok } from "./src/pokemonapi.js";
+import { generateRivalPok, getRandomPokemon } from "./src/pokemonapi.js";
 import { TextBox } from "./src/textbox.js";
 import { ENUM } from "./src/types.js";
 import {
@@ -16,14 +16,11 @@ import {
 
 const buttons = document.querySelectorAll(".arrow");
 
-const touchControls = document.getElementById("controls");
-
-
-if (isMobileOrTablet()) {
-  touchControls.style.display = "block"; // Show touch controls on mobile/tablet
-} else {
-  touchControls.style.display = "none"; // Hide touch controls on desktop
-}
+// if (isMobileOrTablet()) {
+//   touchControls.style.display = "block"; // Show touch controls on mobile/tablet
+// } else {
+//   touchControls.style.display = "none"; // Hide touch controls on desktop
+// }
 buttons.forEach((button) => {
   button.addEventListener("click", (event) => {
     event.preventDefault();
@@ -38,7 +35,7 @@ buttons.forEach((button) => {
     ); // Simulate keyboard press
   });
 });
-const enterBtn = document.getElementById("enterbtn");
+const enterBtn = document.getElementById("enter");
 enterBtn.addEventListener("click", (event) => {
   event.preventDefault();
 
@@ -59,13 +56,13 @@ canvas.height = window.innerHeight;
 let pokemon = JSON.parse(localStorage.getItem("pokemon"));
 let rivalPokemon = JSON.parse(localStorage.getItem("rivalPokemon"));
 let textToDisplay = ENUM.EMPTY_STRING;
-const player = new Player(1100, 350, 40, 60, "blue", context, textToDisplay);
 if (localStorage.getItem("pokemon") === null) {
   localStorage.setItem("pokemon", JSON.stringify([]));
 }
 if (localStorage.getItem("rivalPokemon") != null) {
   localStorage.setItem("rivalPokemon", JSON.stringify([]));
 }
+const player = new Player(1100, 350, 40, 60, "blue", context, textToDisplay);
 
 console.log("INSTRUCTIONS");
 console.log("Go to full screen (f11) for better frontend");
@@ -104,9 +101,9 @@ let martMap = getMartMap();
 let houseMap = getHouseMap();
 player.xpos = getMap().buildings[0].doorx;
 player.ypos = getMap().buildings[0].doory + 10;
-player.width=isMobileOrTablet()?30:40;
-player.height=isMobileOrTablet()?45:60;
-player.speed=isMobileOrTablet()?7:5
+player.width = isMobileOrTablet() ? 30 : 40;
+player.height = isMobileOrTablet() ? 45 : 60;
+player.speed = isMobileOrTablet() ? 7 : 5;
 
 // function handleBattle() {
 //   player.mapin = "battle";
@@ -231,7 +228,10 @@ async function handleBattle() {
       hp = rivalPokemon.rivalData.hp;
 
       if (hp <= 0) {
-        player.textToDisplay = ">You won";
+        player.textToDisplay = ">You won +23 exp";
+        pokemon = JSON.parse(localStorage.getItem("pokemon"));
+        pokemon[0].playerData.exp = pokemon[0].playerData.exp + 23;
+        localStorage.setItem("pokemon", JSON.stringify(pokemon));
         textBox.battleStatus = "won";
         textBox.battledone = true;
       }
@@ -241,8 +241,16 @@ async function handleBattle() {
 async function rivalAttacks() {
   let moves = JSON.parse(localStorage.getItem("rivalPokemon")).validMoves;
   let random = Math.floor(Math.random() * moves.length);
-  let randomMove = moves[random];
-  console.log(randomMove);
+  let lrandomMove = {
+    name: random,
+    power: 20,
+  };
+  let randomMove = moves
+    ? moves.length > 0
+      ? moves[random]
+      : lrandomMove
+    : lrandomMove;
+  // console.log(randomMove);
   textBox.chosenText =
     textBox.battleStatus == null ? "Your opp chose " + randomMove.move : " ";
   textBox.showBattleOptions = true;
@@ -261,7 +269,10 @@ async function rivalAttacks() {
   pokemon = JSON.parse(localStorage.getItem("pokemon"));
   hp = pokemon[0].playerData.currenthp;
   if (hp <= 0) {
-    player.textToDisplay = ">You lost";
+    player.textToDisplay = ">You lost $40";
+    pokemon = JSON.parse(localStorage.getItem("pokemon"));
+    pokemon[0].playerData.paisa = pokemon[0].playerData.paisa - 40;
+    localStorage.setItem("pokemon", JSON.stringify(pokemon));
     textBox.battleStatus = "lost";
     textBox.battledone = true;
   }
@@ -474,13 +485,13 @@ async function gameLoop() {
   // }
   if (player.inGrass) {
     if (!encounteredInCurrentGrass) {
-      console.log(player.inGrass);
+      // console.log(player.inGrass);
       textBox.battledone = false;
       await generateRivalPok();
       rivalPokemonXpos =
         Math.floor(Math.random() * (player.inGrass.width + 1)) +
         player.inGrass.xpos;
-      console.log(rivalPokemonXpos, rivalPokemonXpos % 10);
+      // console.log(rivalPokemonXpos, rivalPokemonXpos % 10);
       rivalPokemonXpos = rivalPokemonXpos - (rivalPokemonXpos % 10);
       encounteredInCurrentGrass = true;
       textBox.isTlistening = false;

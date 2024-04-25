@@ -30,7 +30,7 @@ export class TextBox {
       right2: this.xpos + (107 * this.width) / 100,
       bottom: this.ypos + (70 / 18) * ((18 * this.height) / 100),
     };
-    console.log((107 * this.width) / 100, (16 * this.height) / 100);
+    // console.log((107 * this.width) / 100, (16 * this.height) / 100);
     this.options = {
       battleOptions: [
         {
@@ -323,7 +323,7 @@ export class TextBox {
                 option.xpos - (3.75 * this.width) / 100 === this.cursor.x &&
                 option.ypos === this.cursor.y
             );
-            console.log(smove);
+            // console.log(smove);
             if (smove.option != ".....") {
               this.selectedMove = this.moves.find(
                 (move) => move.move === smove.option

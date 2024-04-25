@@ -410,18 +410,18 @@ export function getBattleMap() {
     ],
     pokemons: [
       new Pokemon(
-        canvas.width / 4,
-        canvas.height / 2.2,
+        isMobileOrTablet()?canvas.width / 4:canvas.width / 2 - 250,
+        isMobileOrTablet()?canvas.height / 2.2: canvas.height / 2 - 70,
         true,
-        canvas.width / 6,
-        canvas.height / 6
+        isMobileOrTablet()?canvas.width / 6:200,
+        isMobileOrTablet()?canvas.height / 6:200
       ),
       new Pokemon(
-        canvas.width / 1.5,
-        canvas.height / 5,
+        isMobileOrTablet()?canvas.width / 1.5:canvas.width / 2 + 150,
+        isMobileOrTablet()?canvas.height / 5:canvas.height / 2 - 200,
         false,
-        canvas.width / 6,
-        canvas.height / 6
+        isMobileOrTablet()?canvas.width / 6:200,
+        isMobileOrTablet()?canvas.height / 6:200
       ),
     ],
   };

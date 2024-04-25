@@ -17,23 +17,23 @@ const getslot = async (pokemons, isMine, level) => {
 
   let showdownImagef = pokemonData.sprites.other.showdown.front_default;
   let showdownImageb = pokemonData.sprites.other.showdown.back_default;
-  console.log(showdownImageb, showdownImagef);
+  // console.log(showdownImageb, showdownImagef);
   if (pokemonData.moves.length == 0) {
-    console.log("moves missing ");
+    // console.log("moves missing ");
     await getslot(pokemons, isMine, level);
   }
   if (showdownImagef == null && showdownImageb == null) {
-    console.log("gifs missing ");
+    // console.log("gifs missing ");
     await getslot(pokemons, isMine, level);
   }
   let pokemon;
-  console.log("  getting moves ");
+  // console.log("  getting moves ");
   let validMoves = await getMoves(pokemonData.moves, level);
   if (validMoves.length == 0) {
-    console.log("validmoves missing ");
+    // console.log("validmoves missing ");
     await getslot(pokemons, isMine, level);
   }
-  console.log("validMoves", validMoves);
+  // console.log("validMoves", validMoves);
   if (isMine) {
     pokemon = {
       pokemonName: pokemons[random],
@@ -117,7 +117,6 @@ const getPokemons = async (type) => {
 };
 
 async function getMoves(moves, level) {
-  const startTime = performance.now();
   const filteredMoves = moves.filter((moveobj) => {
     // Check for a match in a single loop and return directly
     for (const detail of moveobj.version_group_details) {
@@ -150,7 +149,7 @@ async function getMoves(moves, level) {
       }
       return null;
     } catch (error) {
-      console.error("Error fetching move data:", error);
+      // console.error("Error fetching move data:", error);
       return null;
     }
   });
@@ -160,8 +159,6 @@ async function getMoves(moves, level) {
     (result) => result.status === "fulfilled" && result.value !== null
   );
 
-  const endTime = performance.now();
-  console.log(`Execution time: ${endTime - startTime} milliseconds`);
   return validMoves.map((result) => result.value);
 }
 const getMove = async (url) => {

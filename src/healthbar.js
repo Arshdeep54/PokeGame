@@ -52,13 +52,9 @@ export class Healthbar {
     context.fillStyle = "black";
     context.font = "16px serif";
     context.fillText(this.pokemonName, this.xpos + 20, this.ypos + 20);
-    context.fillText(
-      "lvl " + this.level.toString(),
-      this.xpos + this.width - 50,
-      this.ypos + 20
-    );
-    context.fillText("HP ", this.xpos + 20, this.ypos + 50);
-    context.fillStyle = "black";
+    
+      context.fillText("HP ", this.xpos + 20, this.ypos + 50);
+      context.fillStyle = "black";
     context.lineWidth = 1;
     context.strokeRect(this.xpos + 50, this.ypos + 40, this.totalbarwidth, 6);
     let hpfill = (this.hp / this.maxhp) * this.totalbarwidth;
@@ -75,9 +71,22 @@ export class Healthbar {
       context.strokeRect(this.xpos + 50, this.ypos + 80, this.totalbarwidth, 6);
       let xpfill = (this.exp / this.expforNextlevel) * this.totalbarwidth;
       if(xpfill>this.totalbarwidth){
-        xpfill=this.totalbarwidth
+        let diff=xpfill-this.totalbarwidth
+        this.exp=diff
+        let pokemon = JSON.parse(localStorage.getItem("pokemon"));
+        pokemon[0].playerData.exp =diff
+        pokemon[0].playerData.level=pokemon[0].playerData.level+1
+        this.level=pokemon[0].playerData.level
+        localStorage.setItem("pokemon", JSON.stringify(pokemon));
+
+        xpfill = (this.exp / this.expforNextlevel) * this.totalbarwidth;
       }
       context.fillRect(this.xpos + 50, this.ypos + 80, xpfill, 6);
     }
+    context.fillText(
+      "lvl " + this.level.toString(),
+      this.xpos + this.width - 50,
+      this.ypos + 20
+    );
   }
 }
