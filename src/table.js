@@ -1,3 +1,6 @@
+import { ENUM } from "./types.js";
+import { isMobileOrTablet } from "./utils.js";
+
 export class Table {
   constructor(
     xpos,
@@ -35,7 +38,8 @@ export class Table {
 
     if (this.textTodisplay.length > 1) {
       context.fillStyle = "black";
-      context.font = "22px serif";
+      let font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
+      context.font = `${font} serif`;
       context.fillText(this.textTodisplay, this.xpos + 30, this.ypos + 30);
     }
   }

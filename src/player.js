@@ -1,4 +1,10 @@
-import { getCenterMap, getHouseMap, getMap, getMartMap, getOakMap } from "./utils.js";
+import {
+  getCenterMap,
+  getHouseMap,
+  getMap,
+  getMartMap,
+  getOakMap,
+} from "./utils.js";
 
 const ENUM = {
   OAK: "OAK",
@@ -36,7 +42,7 @@ export class Player {
     this.textToDisplay = textToDisplay;
     this.ballSelecting = false;
     this.isListening = true;
-
+ 
     document.addEventListener("keydown", this.handleKeyDown.bind(this));
     this.images = {
       left: new Image(),

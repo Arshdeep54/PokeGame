@@ -10,4 +10,6 @@ export const ENUM = {
   BG_COLOR: "#6ece67",
   EMPTY_STRING: " ",
   BATTLE: "battle",
+  FONT_DESKTOP:'22px',
+  FONT_MOBILE:'16px'
 };

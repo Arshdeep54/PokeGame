@@ -15,7 +15,7 @@ export class Pokemon {
     const pokImage = this.image;
 
     if (pokImage.complete && pokImage.src != null) {
-      context.drawImage(pokImage, this.xpos, this.ypos, 200, 200);
+      context.drawImage(pokImage, this.xpos, this.ypos, this.width, this.height);
     }
   }
 }

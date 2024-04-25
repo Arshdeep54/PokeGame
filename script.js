@@ -9,26 +9,47 @@ import {
   getMap,
   getMartMap,
   getOakMap,
+  isMobileOrTablet,
 } from "./src/utils.js";
 // const controls = document.getElementById("controls");
 // controls.addEventListener("touchstart", handleTouchControls);
-// // const buttons = document.querySelectorAll(".arrow");
 
-// // buttons.forEach(button => {
-// //   button.addEventListener("touchstart", handleTouchStart);
-// // });
-// function handleTouchControls(event) {
-//   event.preventDefault(); // Prevent default behavior
+const buttons = document.querySelectorAll(".arrow");
 
-//   const button = event.target.closest("button"); // Get the button that was touched
-//   if (!button) return; // Ignore touches outside buttons
+const touchControls = document.getElementById("controls");
 
-//   const key = button.className.split(" ")[1]; // Extract direction from class name (assuming class names are like "up", "down", etc.)
-//   document.dispatchEvent(
-//     new KeyboardEvent("keydown", { key: `Arrow${key.toUpperCase()}` })
-//   ); // Simulate keyboard press
+
+// if (isMobileOrTablet()) {
+//   touchControls.style.display = "block"; // Show touch controls on mobile/tablet
+// } else {
+//   touchControls.style.display = "none"; // Hide touch controls on desktop
 // }
+buttons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
 
+    const key = button.className.split(" ")[1];
+    button.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: `Arrow${key}`,
+        bubbles: true,
+        cancelable: true,
+      })
+    ); // Simulate keyboard press
+  });
+});
+const enterBtn = document.getElementById("enterbtn");
+enterBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  enterBtn.dispatchEvent(
+    new KeyboardEvent("keydown", {
+      key: "Enter",
+      bubbles: true,
+      cancelable: true,
+    })
+  );
+});
 const canvas = document.querySelector("canvas");
 let context = canvas.getContext("2d");
 
@@ -83,6 +104,10 @@ let martMap = getMartMap();
 let houseMap = getHouseMap();
 player.xpos = getMap().buildings[0].doorx;
 player.ypos = getMap().buildings[0].doory + 10;
+player.width=isMobileOrTablet()?30:40;
+player.height=isMobileOrTablet()?45:60;
+player.speed=isMobileOrTablet()?7:5
+
 // function handleBattle() {
 //   player.mapin = "battle";
 //   player.isListening = false;
@@ -461,12 +486,6 @@ async function gameLoop() {
       textBox.isTlistening = false;
       textBox.inBattle = false;
     }
-
-    console.log(
-      rivalPokemonXpos,
-      player.xpos,
-      player.xpos > rivalPokemonXpos - 10 && player.xpos < rivalPokemonXpos + 10
-    );
     if (
       player.xpos > rivalPokemonXpos - 10 &&
       player.xpos < rivalPokemonXpos + 10

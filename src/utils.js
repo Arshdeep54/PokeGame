@@ -11,6 +11,12 @@ import { Table } from "./table.js";
 import { TreeField } from "./tree.js";
 import { ENUM } from "./types.js";
 
+export function isMobileOrTablet() {
+  const userAgent = navigator.userAgent;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    userAgent
+  );
+}
 export function getMap() {
   let constants = {
     house: {
@@ -375,41 +381,47 @@ export function getBattleMap() {
   return {
     hpbars: [
       new Healthbar(
-        canvas.width / 2 - 250,
-        canvas.height / 2 - 250,
+        isMobileOrTablet()?canvas.width / 4:canvas.width / 2 - 250,
+        isMobileOrTablet()?canvas.height / 5:canvas.height / 2 - 250,
         21,
         35,
         3,
         30,
         50,
         false,
-        250,
-        100,
+        isMobileOrTablet()?canvas.width / 3:250,
+        isMobileOrTablet()?canvas.height / 5:100,
         ""
       ),
+
       new Healthbar(
-        canvas.width / 2 + 75,
-        canvas.height / 2 + 50,
+        isMobileOrTablet()?canvas.width / 1.8:canvas.width / 2 +75,
+        isMobileOrTablet()?canvas.height / 1.8:canvas.height / 2 +50,
         29,
         35,
         5,
         30,
         60,
         true,
-        250,
-        100,
+        isMobileOrTablet()?canvas.width / 3:250,
+        isMobileOrTablet()?canvas.height / 5:100,
         "Bulbasore"
       ),
-      // new Rectangle(canvas.width / 2 - 250, canvas.height / 2-40 , 10, 80, "red","door")
     ],
     pokemons: [
-      new Pokemon(canvas.width / 2 - 250, canvas.height / 2 - 70, true, 30, 40),
       new Pokemon(
-        canvas.width / 2 + 150,
-        canvas.height / 2 - 200,
+        canvas.width / 4,
+        canvas.height / 2.2,
+        true,
+        canvas.width / 6,
+        canvas.height / 6
+      ),
+      new Pokemon(
+        canvas.width / 1.5,
+        canvas.height / 5,
         false,
-        30,
-        40
+        canvas.width / 6,
+        canvas.height / 6
       ),
     ],
   };
