@@ -19,11 +19,11 @@ const buttons = document.querySelectorAll(".arrow");
 const touchControls = document.getElementById("controls");
 
 
-// if (isMobileOrTablet()) {
-//   touchControls.style.display = "block"; // Show touch controls on mobile/tablet
-// } else {
-//   touchControls.style.display = "none"; // Hide touch controls on desktop
-// }
+if (isMobileOrTablet()) {
+  touchControls.style.display = "block"; // Show touch controls on mobile/tablet
+} else {
+  touchControls.style.display = "none"; // Hide touch controls on desktop
+}
 buttons.forEach((button) => {
   button.addEventListener("click", (event) => {
     event.preventDefault();
