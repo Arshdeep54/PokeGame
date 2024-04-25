@@ -11,21 +11,21 @@ import {
   getOakMap,
   isMobileOrTablet,
 } from "./src/utils.js";
-// const controls = document.getElementById("controls");
+const controls = document.getElementById("controls");
 // controls.addEventListener("touchstart", handleTouchControls);
 
 const buttons = document.querySelectorAll(".arrow");
-
-// if (isMobileOrTablet()) {
-//   touchControls.style.display = "block"; // Show touch controls on mobile/tablet
-// } else {
-//   touchControls.style.display = "none"; // Hide touch controls on desktop
-// }
+if (isMobileOrTablet()) {
+  controls.style.display = "block"; // Show touch controls on mobile/tablet
+} else {
+  controls.style.display = "none"; // Hide touch controls on desktop
+}
 buttons.forEach((button) => {
   button.addEventListener("click", (event) => {
     event.preventDefault();
 
-    const key = button.className.split(" ")[1];
+    const key = button.className.split(" ")[2];
+    console.log(key);
     button.dispatchEvent(
       new KeyboardEvent("keydown", {
         key: `Arrow${key}`,
@@ -526,10 +526,12 @@ async function gameLoop() {
     textBox.movedone = false;
     textBox.isTlistening = true;
   }
+if(pokemon.length > 0){
 
-  if (pokemon[0] != null && pokemon.length > 0 && player.mapin == "OAK") {
+  if (pokemon[0] != null && player.mapin == "OAK") {
     textBox.text = "You got " + pokemon[0].pokemonName.pokemon.name;
   }
+}
 
   if (player.enterPressed) {
     handleEnterPressed();

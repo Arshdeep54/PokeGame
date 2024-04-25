@@ -20,6 +20,7 @@ canvas {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  z-index: 900;
   /* background-color: #ddd;  */
 }
 
