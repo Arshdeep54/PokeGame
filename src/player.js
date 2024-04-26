@@ -28,6 +28,7 @@ export class Player {
     this.textToDisplay = textToDisplay;
     this.ballSelecting = false;
     this.isListening = true;
+    this.canAddNewPok=false
 
     document.addEventListener("keydown", this.handleKeyDown.bind(this));
     this.images = {
@@ -108,9 +109,13 @@ export class Player {
           this.textToDisplay == ENUM.MART ||
           this.textToDisplay == ENUM.HOUSE
         ) {
+          if(this.textToDisplay == ENUM.OAK ){
+            var newPokemonEmptyArray=[]
+            localStorage.setItem(ENUM.POKEMON_KEY,JSON.stringify(newPokemonEmptyArray))
+          }
           this.enterPressed = true;
           this.xpos = canvas.width / 2;
-        } else if (this.textToDisplay == ENUM.TABLE && this.mapin == ENUM.OAK) {
+        } else if (this.textToDisplay == ENUM.TABLE && this.mapin == ENUM.OAK &&this.canAddNewPok) {
           this.ballSelecting = true;
         } else if (
           this.textToDisplay == ENUM.TABLE &&
@@ -296,7 +301,7 @@ export class Player {
                 this.enterPressed = false;
                 this.mapin = ENUM.INITIAL;
                 this.xpos = getMap()["buildings"][2].doorx;
-                this.ypos = getMap()["buildings"][2].doory; // }
+                this.ypos = getMap()["buildings"][2].doory;
                 this.textToDisplay = building.text;
                 return true;
               } else {
@@ -339,7 +344,7 @@ export class Player {
   }
   collidesWith(obj) {
     return (
-      this.xpos < obj.xpos + obj.width && //true
+      this.xpos < obj.xpos + obj.width && 
       this.xpos + this.width > obj.xpos &&
       this.ypos < obj.ypos + obj.height &&
       this.ypos + this.height > obj.ypos

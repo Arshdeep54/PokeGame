@@ -21,6 +21,22 @@ export function isMobileOrTablet() {
   );
   return navigationTest || screenWidth<mobileBreakpoint
 }
+export function wrapText(context ,text, maxWidth) {
+  const words = text.split(' ');
+  let line = '';
+  let lines = [];
+  for (const word of words) {
+    const testLine = line + ' ' + word;
+    if (context.measureText(testLine).width < maxWidth) {
+      line = testLine;
+    } else {
+      lines.push(line);
+      line = word;
+    }
+  }
+  lines.push(line);
+  return lines;
+}
 export function getMap() {
   var constants = {
     house: {

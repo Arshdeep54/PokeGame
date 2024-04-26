@@ -20,7 +20,7 @@ export const ENUM = {
   EMPTY_STRING: " ",
   BATTLE: "battle",
   FONT_DESKTOP: "1.6rem",
-  FONT_MOBILE: "1rem",
+  FONT_MOBILE: "0.5rem",
   COLORS: {
     BLACK: "black",
     BG_COLOR: "#6ece67",

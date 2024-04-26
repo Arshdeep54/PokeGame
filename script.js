@@ -108,7 +108,7 @@ player.xpos = getMap().buildings[0].doorx;
 player.ypos = getMap().buildings[0].doory + 10;
 player.width = isMobileOrTablet() ? 30 : 40;
 player.height = isMobileOrTablet() ? 45 : 60;
-player.speed = isMobileOrTablet() ? 8 : 5;
+player.speed = isMobileOrTablet() ? 8 : 7;
 
 async function handleBattle() {
   if (player.inGrass) {
@@ -209,6 +209,7 @@ async function handleEnterPressed() {
 
     player.draw();
     textBox.draw();
+    player.canAddNewPok=true
     if (textBox.text != ENUM.TABLE && pokemon.length == 0) {
       textBox.instruction = ENUM.PICKONE;
     }
@@ -218,13 +219,15 @@ async function handleEnterPressed() {
   }
 
   if (textBox.text === ENUM.TABLE && player.ballSelecting) {
-    await getRandomPokemon().then((res) => {
+    pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+    await getRandomPokemon(pokemon.length).then((res) => {
       pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
 
-      if (pokemon.length == 1) {
+      if (pokemon.length >= 1) {
         player.isAllowedInGrass = true;
       }
       player.ballSelecting = false;
+      player.canAddNewPok=false
     });
   }
   if (textBox.text == ENUM.CENTER || player.mapin == ENUM.CENTER) {
@@ -371,9 +374,13 @@ async function gameLoop() {
     textBox.movedone = false;
     textBox.isTlistening = true;
   }
-  if (pokemon.length > 0) {
-    if (pokemon[0] != null && player.mapin == ENUM.OAK) {
-      textBox.text = "You got " + pokemon[0].pokemonName.pokemon.name;
+  pokemon=JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+  if(pokemon){
+
+    if (pokemon.length > 0) {
+      if (pokemon[pokemon.length-1] != null && player.mapin == ENUM.OAK) {
+        textBox.text = "You got " + pokemon[pokemon.length-1].pokemonName.pokemon.name;
+      }
     }
   }
 

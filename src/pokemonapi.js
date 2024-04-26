@@ -1,14 +1,17 @@
 import { ENUM } from "./types.js";
 
-export const getRandomPokemon = async () => {
+export const getRandomPokemon = async (oldLen) => {
   const pokemons = await getPokemons("grass");
 
   var pokemon = await getslot(pokemons, 1, true, 1);
 
-  if (JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY)).length == 0) {
-    var pokemonArray = [pokemon];
+  var oldPokemonArray=JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))
+  if(oldPokemonArray.length<oldLen+1){
+
+    var pokemonArray = [...oldPokemonArray,pokemon];
     localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemonArray));
   }
+  
 };
 const getslot = async (pokemons, isMine, level) => {
   const max = pokemons.length;

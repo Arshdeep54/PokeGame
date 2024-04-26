@@ -111,12 +111,12 @@ export class TextBox {
 
     this.context.fillText(
       this.text,
-      this.xpos + (10 * this.width) / 100,
+      this.xpos + (6 * this.width) / 100,
       this.ypos + (30 * this.height) / 100
     );
     this.context.fillText(
       this.instruction,
-      this.xpos + (10 * this.width) / 100,
+      this.xpos + (6 * this.width) / 100,
       this.ypos + this.height - (10 * this.height) / 100
     );
 

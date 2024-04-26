@@ -1,5 +1,5 @@
 import { ENUM } from "./types.js";
-import { isMobileOrTablet} from "./utils.js";
+import { isMobileOrTablet, wrapText } from "./utils.js";
 
 export class Rectangle {
   constructor(xpos, ypos, width, height, color, text) {
@@ -11,6 +11,9 @@ export class Rectangle {
     this.text = text;
   }
   draw(context) {
+    const lineHeight = 20; 
+    const padding = this.ypos + 50;
+
     context.fillStyle = this.color;
     context.fillRect(this.xpos, this.ypos, this.width, this.height);
     if (this.text == ENUM.MART) {
@@ -24,13 +27,24 @@ export class Rectangle {
       context.fillStyle = ENUM.COLORS.BLACK;
       var font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
       context.font = `${font} serif`;
-      context.fillText(
-        "Will add instructions here ,check console for now  ",
-        this.xpos + 50,
-        this.ypos + 50,
-        400,
-        400
-      );
+      var instructions = [
+        "Go to full screen and refresh for better frontend.",
+        "Try touching a grass , it will say to get a pokemon from OAK's house.",
+        "Go to oak house and touch the table to pick one pokemon.",
+        "Travel through the grass (for now horizontlly ) and you will randomly end up in war .",
+        "After war ends , get to the center ,touch the table ,press enter to heal your pokemon.",
+        "You can get a new pokemon each time you visit OAK's house .",
+      ];
+      let y = padding;
+      for (var instruction of instructions) {
+        instruction = String.fromCharCode(0x25cf) + instruction; //charcode for filled bullet
+        const wrappedLines = wrapText(context, instruction, this.width - 100);
+        for (const line of wrappedLines) {
+          context.fillText(line, this.xpos + 50, y);
+          y += lineHeight;
+        }
+        y += lineHeight;
+      }
     }
   }
 }
