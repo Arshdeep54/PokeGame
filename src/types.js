@@ -1,6 +1,8 @@
 export const ENUM = {
   POKEMON_KEY:"pokemon",
+  POKEMON_KEY_ALL:"pokemon_all",
   RIVAL_POKEMON_KEY:"rivalPokemon",
+  RIVAL_POKEMON_KEY_ALL:"rivalPokemon_all",
   OAK: "OAK",
   INITIAL: "initial",
   HOUSE: "House",
@@ -22,6 +24,7 @@ export const ENUM = {
   FONT_DESKTOP: "1.6rem",
   FONT_MOBILE: "0.5rem",
   COLORS: {
+    WHITE:"white",
     BLACK: "black",
     BG_COLOR: "#6ece67",
     HOUSE:"#4B4FBD",

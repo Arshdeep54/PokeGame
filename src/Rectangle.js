@@ -11,21 +11,22 @@ export class Rectangle {
     this.text = text;
   }
   draw(context) {
-    const lineHeight = 20; 
+    var lineHeight=20
     const padding = this.ypos + 50;
-
+    
     context.fillStyle = this.color;
     context.fillRect(this.xpos, this.ypos, this.width, this.height);
     if (this.text == ENUM.MART) {
       var instructions = "Nothing here";
       context.fillStyle = ENUM.COLORS.BLACK;
       var font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
-      context.font = `${font} serif`;
+      context.font = `0.8rem  serif`;
       context.fillText(instructions, this.xpos + 230, this.ypos + 50, 400, 400);
     }
     if (this.text == ENUM.HOUSE) {
       context.fillStyle = ENUM.COLORS.BLACK;
       var font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
+       lineHeight = 24; 
       context.font = `${font} serif`;
       var instructions = [
         "Go to full screen and refresh for better frontend.",
@@ -37,10 +38,14 @@ export class Rectangle {
       ];
       let y = padding;
       for (var instruction of instructions) {
-        instruction = String.fromCharCode(0x25cf) + instruction; //charcode for filled bullet
+        instruction = String.fromCharCode(0x25cf) + " "+ instruction; //charcode for filled bullet
         const wrappedLines = wrapText(context, instruction, this.width - 100);
         for (const line of wrappedLines) {
-          context.fillText(line, this.xpos + 50, y);
+          var nxpos=this.xpos + 50
+          if(wrappedLines[0]!=line){
+nxpos=this.xpos+76
+          }
+          context.fillText(line,nxpos, y);
           y += lineHeight;
         }
         y += lineHeight;

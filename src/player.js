@@ -18,7 +18,7 @@ export class Player {
     this.lastMove = "front";
     this.ctx = ctx;
     this.isAllowedInGrass =
-      JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY)).length == 1;
+      JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY)).length >= 1;
     this.inGrass = null;
     this.entered = null;
     this.enterPressed = false;
@@ -28,7 +28,8 @@ export class Player {
     this.textToDisplay = textToDisplay;
     this.ballSelecting = false;
     this.isListening = true;
-    this.canAddNewPok=false
+    this.canAddNewPok = false;
+    this.currentPokemonIndex = 0;
 
     document.addEventListener("keydown", this.handleKeyDown.bind(this));
     this.images = {
@@ -109,13 +110,22 @@ export class Player {
           this.textToDisplay == ENUM.MART ||
           this.textToDisplay == ENUM.HOUSE
         ) {
-          if(this.textToDisplay == ENUM.OAK ){
-            var newPokemonEmptyArray=[]
-            localStorage.setItem(ENUM.POKEMON_KEY,JSON.stringify(newPokemonEmptyArray))
+          if (this.textToDisplay == ENUM.OAK) {
+            this.canAddNewPok = true;
           }
+          if(this.textToDisplay == ENUM.HOUSE
+          ){
+            this.mapin==ENUM.HOUSE
+          
+          }
+
           this.enterPressed = true;
           this.xpos = canvas.width / 2;
-        } else if (this.textToDisplay == ENUM.TABLE && this.mapin == ENUM.OAK &&this.canAddNewPok) {
+        } else if (
+          this.textToDisplay == ENUM.TABLE &&
+          this.mapin == ENUM.OAK &&
+          this.canAddNewPok
+        ) {
           this.ballSelecting = true;
         } else if (
           this.textToDisplay == ENUM.TABLE &&
@@ -233,7 +243,10 @@ export class Player {
               if (building.text == ENUM.TABLE) {
                 this.collidingTable = true;
               }
-              this.textToDisplay = building.text;
+              // console.log(this.canAddNewPok);
+              if (this.canAddNewPok) {
+                this.textToDisplay = building.text;
+              }
               return true;
             } else {
               this.collidingTable = false;
@@ -344,7 +357,7 @@ export class Player {
   }
   collidesWith(obj) {
     return (
-      this.xpos < obj.xpos + obj.width && 
+      this.xpos < obj.xpos + obj.width &&
       this.xpos + this.width > obj.xpos &&
       this.ypos < obj.ypos + obj.height &&
       this.ypos + this.height > obj.ypos

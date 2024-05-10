@@ -58,15 +58,28 @@ const context = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-var pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-var rivalPokemon = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY));
 var textToDisplay = ENUM.EMPTY_STRING;
 if (localStorage.getItem(ENUM.POKEMON_KEY) === null) {
   localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify([]));
 }
+if (localStorage.getItem(ENUM.POKEMON_KEY_ALL) === null) {
+  localStorage.setItem(ENUM.POKEMON_KEY_ALL, JSON.stringify([]));
+}
 if (localStorage.getItem(ENUM.RIVAL_POKEMON_KEY) != null) {
   localStorage.setItem(ENUM.RIVAL_POKEMON_KEY, JSON.stringify([]));
 }
+if (localStorage.getItem(ENUM.RIVAL_POKEMON_KEY_ALL) === null) {
+  localStorage.setItem(ENUM.RIVAL_POKEMON_KEY_ALL, JSON.stringify([]));
+}
+
+var pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+var rivalPokemon = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY));
+var pokemonAll = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY_ALL));
+var rivalPokemonAll = JSON.parse(
+  localStorage.getItem(ENUM.RIVAL_POKEMON_KEY_ALL)
+);
+localStorage.setItem("currentPokemonIndex",pokemon.length-1);
+
 
 console.log("INSTRUCTIONS");
 console.log("Go to full screen (f11) for better frontend");
@@ -85,7 +98,8 @@ console.log(
 
 var rivalPokemonXpos = null;
 var rivalTurn = false;
-
+var loadingData = true;
+var index = 0;
 const player = new Player(1100, 350, 40, 60, "blue", context, textToDisplay);
 const textBox = new TextBox(
   "Your pokemon is dead ",
@@ -109,7 +123,7 @@ player.ypos = getMap().buildings[0].doory + 10;
 player.width = isMobileOrTablet() ? 30 : 40;
 player.height = isMobileOrTablet() ? 45 : 60;
 player.speed = isMobileOrTablet() ? 8 : 7;
-
+var currentPokemonIndex=localStorage.getItem("currentPokemonIndex");
 async function handleBattle() {
   if (player.inGrass) {
     player.mapin = ENUM.BATTLE;
@@ -124,7 +138,7 @@ async function handleBattle() {
     textBox.isTlistening = true;
 
     if (textBox.selectedMove != null) {
-      var attackChange = textBox.selectedMove.power;
+      var attackChange = textBox.selectedMove.power/2;
 
       rivalPokemon = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY));
       var level = rivalPokemon.rivalData.level;
@@ -149,7 +163,8 @@ async function handleBattle() {
       if (hp <= 0) {
         player.textToDisplay = ENUM.WON_MESSAGE;
         pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-        pokemon[0].playerData.exp = pokemon[0].playerData.exp + 23;
+        currentPokemonIndex=localStorage.getItem("currentPokemonIndex");
+        pokemon[currentPokemonIndex].playerData.exp = pokemon[currentPokemonIndex].playerData.exp + 23;
         localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemon));
         textBox.battleStatus = "won";
         textBox.battledone = true;
@@ -176,22 +191,22 @@ async function rivalAttacks() {
   textBox.showBattleOptions = true;
   textBox.movedone = true;
 
-  var attackChange = randomMove.power;
+  var attackChange = randomMove.power/2;
 
   pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-  var level = pokemon[0].playerData.level;
-  var hp = pokemon[0].playerData.currenthp;
+  var level = pokemon[currentPokemonIndex].playerData.level;
+  var hp = pokemon[currentPokemonIndex].playerData.currenthp;
   if (hp > 0) {
-    pokemon[0].playerData.currenthp =
-      pokemon[0].playerData.currenthp - attackChange;
+    pokemon[currentPokemonIndex].playerData.currenthp =
+      pokemon[currentPokemonIndex].playerData.currenthp - attackChange;
     localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemon));
   }
   pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-  hp = pokemon[0].playerData.currenthp;
+  hp = pokemon[currentPokemonIndex].playerData.currenthp;
   if (hp <= 0) {
     player.textToDisplay = ENUM.LOST_MESSAGE;
     pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-    pokemon[0].playerData.paisa = pokemon[0].playerData.paisa - 40;
+    pokemon[currentPokemonIndex].playerData.paisa = pokemon[currentPokemonIndex].playerData.paisa - 40;
     localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemon));
     textBox.battleStatus = "lost";
     textBox.battledone = true;
@@ -209,26 +224,34 @@ async function handleEnterPressed() {
 
     player.draw();
     textBox.draw();
-    player.canAddNewPok=true
-    if (textBox.text != ENUM.TABLE && pokemon.length == 0) {
+    // console.log(player.canAddNewPok);
+    if (textBox.text != ENUM.TABLE) {
       textBox.instruction = ENUM.PICKONE;
-    }
-    if (pokemon.length != 0) {
-      textBox.instruction = ENUM.EMPTY_STRING;
     }
   }
 
   if (textBox.text === ENUM.TABLE && player.ballSelecting) {
+    pokemonAll = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY_ALL));
+    const max = 19;
+    const min = 0;
+    var random = Math.floor(Math.random() * (max - min) + min);
+    var newPokemon = pokemonAll[random];
     pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-    await getRandomPokemon(pokemon.length).then((res) => {
-      pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+    console.log(pokemon);
+    pokemon = [...pokemon, newPokemon];
+    console.log(pokemon);
+    localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemon));
+    pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+    console.log(pokemon);
 
-      if (pokemon.length >= 1) {
-        player.isAllowedInGrass = true;
-      }
-      player.ballSelecting = false;
-      player.canAddNewPok=false
-    });
+    localStorage.setItem("currentPokemonIndex",pokemon.length-1);
+
+    if (pokemon.length >= 1) {
+      player.isAllowedInGrass = true;
+    }
+
+    player.ballSelecting = false;
+    player.canAddNewPok = false;
   }
   if (textBox.text == ENUM.CENTER || player.mapin == ENUM.CENTER) {
     player.mapin = ENUM.CENTER;
@@ -275,6 +298,38 @@ async function handleEnterPressed() {
     }
   }
 }
+function drawLoader() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.fillStyle = ENUM.COLORS.BG_COLOR;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  var font='6rem'
+  context.font = `${font} serif`;
+  context.fillStyle = ENUM.COLORS.BLACK;
+  
+  context.fillText("POKEMON",canvas.width/3,canvas.height/3)
+  font = isMobileOrTablet() ? ENUM.FONT_MOBILE : ENUM.FONT_DESKTOP;
+  context.font = `${font} serif`;
+  context.fillStyle = ENUM.COLORS.WHITE;
+  context.fillText("LOADING...", canvas.width / 2-75, canvas.height / 2);
+
+  const totalLoading = 20;
+  const totalLoadingWidth = 150;
+
+  context.fillStyle = ENUM.COLORS.BLACK;
+  context.lineWidth = 1;
+  context.strokeRect(
+    canvas.width / 2 -75,
+    canvas.height / 2 + 30,
+    totalLoadingWidth,
+    6
+  );
+  console.log(index);
+  const loading = (index / totalLoading) * totalLoadingWidth;
+
+  context.fillStyle = ENUM.COLORS.GREEN; // Change fill color for completed progress
+  context.fillRect(canvas.width / 2 -75, canvas.height / 2 + 30, loading, 6);
+  context.fillStyle = ENUM.COLORS.BLACK;
+}
 function draw() {
   map = player.mapin;
   var maptoRender;
@@ -300,12 +355,28 @@ function draw() {
     player.draw();
   }
 }
+async function getApiData() {
+  for (index = 0; index < 20; index++) {
+    if (pokemonAll.length < 20 && rivalPokemonAll.length < 20) {
+      console.log(index, "in ");
+      pokemonAll = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY_ALL));
+      rivalPokemonAll = JSON.parse(
+        localStorage.getItem(ENUM.RIVAL_POKEMON_KEY_ALL)
+      );
+      await getRandomPokemon(pokemonAll.length);
+      await generateRivalPok(rivalPokemonAll.length);
+    }
+  }
+  loadingData = false;
+}
+
 function init() {
   context.fillStyle = ENUM.COLORS.BG_COLOR;
   context.fillRect(0, 0, canvas.width, canvas.height);
   draw();
   player.draw();
   textBox.draw();
+  getApiData();
   gameLoop();
 }
 
@@ -316,6 +387,9 @@ async function gameLoop() {
   draw();
   textBox.draw();
   textBox.text = player.textToDisplay;
+  if (loadingData) {
+    drawLoader();
+  }
 
   if (textBox.text === ENUM.OAK) {
     textBox.instruction = ENUM.PRESS_ENTER + ENUM.OAK;
@@ -336,11 +410,32 @@ async function gameLoop() {
   if (textBox.text === ENUM.HOUSE) {
     textBox.instruction = ENUM.PRESS_ENTER + ENUM.HOUSE;
   }
+  if(player.mapin==ENUM.HOUSE){
+    textBox.inHouse=true;
+  }else{
+    textBox.inHouse=false;
+  }
 
   if (player.inGrass) {
     if (!encounteredInCurrentGrass) {
       textBox.battledone = false;
-      await generateRivalPok();
+      // await generateRivalPok();
+      rivalPokemonAll = JSON.parse(
+        localStorage.getItem(ENUM.RIVAL_POKEMON_KEY_ALL)
+      );
+      const max = 19;
+      const min = 0;
+      var random = Math.floor(Math.random() * (max - min) + min);
+      var newRivalPokemon = rivalPokemonAll[random];
+      rivalPokemon = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY));
+      
+      localStorage.setItem(
+        ENUM.RIVAL_POKEMON_KEY,
+        JSON.stringify(newRivalPokemon)
+      );
+      rivalPokemon = JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY));
+      console.log(rivalPokemon);
+
       rivalPokemonXpos =
         Math.floor(Math.random() * (player.inGrass.width + 1)) +
         player.inGrass.xpos;
@@ -374,15 +469,15 @@ async function gameLoop() {
     textBox.movedone = false;
     textBox.isTlistening = true;
   }
-  pokemon=JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-  if(pokemon){
-
-    if (pokemon.length > 0) {
-      if (pokemon[pokemon.length-1] != null && player.mapin == ENUM.OAK) {
-        textBox.text = "You got " + pokemon[pokemon.length-1].pokemonName.pokemon.name;
-      }
-    }
-  }
+  pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+  // if (pokemon) {
+  //   if (pokemon.length > 0) {
+  //     if (pokemon[pokemon.length - 1] != null && player.mapin == ENUM.OAK) {
+  //       textBox.text =
+  //         "You last got " + pokemon[pokemon.length - 1].pokemonName.pokemon.name;
+  //     }
+  //   }
+  // }
 
   if (player.enterPressed) {
     handleEnterPressed();
@@ -391,9 +486,11 @@ async function gameLoop() {
     await rivalAttacks();
     textBox.movedone = true;
   }
-
-  if (pokemon[0] != null && pokemon.length > 0 && player.mapin == ENUM.OAK) {
-    textBox.text = "You got " + pokemon[0].pokemonName.pokemon.name;
+  if (!player.canAddNewPok) {
+    currentPokemonIndex=localStorage.getItem("currentPokemonIndex");
+    if (pokemon[currentPokemonIndex] != null && pokemon.length > 0 && player.mapin == ENUM.OAK) {
+      textBox.text = "You got " + pokemon[currentPokemonIndex].pokemonName.pokemon.name;
+    }
   }
 
   if (player.enterPressed) {

@@ -1,15 +1,16 @@
 import { ENUM } from "./types.js";
 
+
 export const getRandomPokemon = async (oldLen) => {
   const pokemons = await getPokemons("grass");
 
   var pokemon = await getslot(pokemons, 1, true, 1);
 
-  var oldPokemonArray=JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))
+  var oldPokemonArray=JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY_ALL))
   if(oldPokemonArray.length<oldLen+1){
 
     var pokemonArray = [...oldPokemonArray,pokemon];
-    localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemonArray));
+    localStorage.setItem(ENUM.POKEMON_KEY_ALL, JSON.stringify(pokemonArray));
   }
   
 };
@@ -75,14 +76,18 @@ const getPokemonData = async (url) => {
   return data;
 };
 
-export const generateRivalPok = async () => {
+export const generateRivalPok = async (oldLen) => {
   const pokemons = await getPokemons("grass");
-  var player_pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-  var level_p = player_pokemon[0].playerData.level;
-  var rivalPokemon = await getslot(pokemons, false, level_p + 1);
+  // var player_pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
+  // var level_p = player_pokemon[player.currentPokemonIndex].playerData.level;
+  var rivalPokemon = await getslot(pokemons, false,  1);
 
-  localStorage.setItem(ENUM.RIVAL_POKEMON_KEY, JSON.stringify(rivalPokemon));
+  var oldRivalPokemonArray=JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY_ALL))
+  if(oldRivalPokemonArray.length<oldLen+1){
 
+    var pokemonArray = [...oldRivalPokemonArray,rivalPokemon];
+    localStorage.setItem(ENUM.RIVAL_POKEMON_KEY_ALL, JSON.stringify(pokemonArray));
+  }
   // }
 };
 const getPokemons = async (type) => {

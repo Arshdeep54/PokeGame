@@ -1,5 +1,5 @@
 import { ENUM } from "./types.js";
-import { isMobileOrTablet} from "./utils.js";
+import { isMobileOrTablet } from "./utils.js";
 
 export class TextBox {
   constructor(text, xpos, ypos, width, height, context) {
@@ -10,6 +10,7 @@ export class TextBox {
     this.height = height;
     this.context = context;
     this.instruction = ENUM.EMPTY_STRING;
+    this.inHouse = false;
     this.inBattle = false;
     this.isTlistening = false;
     this.mapin = ENUM.BATTLE;
@@ -21,6 +22,7 @@ export class TextBox {
     this.selectedMove = null;
     this.battledone = false;
     this.showBattleOptions = true;
+    this.currentPokemonIndex = 0;
     this.cornerp = {
       left1: this.xpos + (3.75 * this.width) / 100,
       left2: this.xpos + (84 * this.width) / 100,
@@ -85,9 +87,11 @@ export class TextBox {
     };
   }
   async loadMoves() {
-    this.moves = JSON.parse(
-      localStorage.getItem(ENUM.POKEMON_KEY)
-    )[0].validMoves;
+    var currentPokemonIndex = localStorage.getItem("currentPokemonIndex");
+
+    this.moves = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[
+      currentPokemonIndex
+    ].validMoves;
     this.options.fightOptions.forEach((fightOption, index) => {
       if (this.moves.length > index) {
         fightOption.option = this.moves[index].move;
@@ -97,6 +101,9 @@ export class TextBox {
     });
   }
   draw() {
+    if (this.inHouse) {
+      return;
+    }
     this.context.lineWidth = 10;
     this.context.fillStyle = ENUM.COLORS.TEXTBOX;
     this.context.fillRect(
@@ -196,6 +203,21 @@ export class TextBox {
               this.isTlistening = false;
               this.mapin = ENUM.INITIAL;
               return;
+            }
+            if (this.selectedBattleOption.option == "Pokemon") {
+              console.log("pokkkkk");
+              var currentPokemonIndex = localStorage.getItem(
+                "currentPokemonIndex"
+              );
+              currentPokemonIndex = parseInt(currentPokemonIndex, 10) || 0;
+              currentPokemonIndex++;
+              if (
+                JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY)).length - 1 <
+                currentPokemonIndex
+              ) {
+                currentPokemonIndex = 0;
+              }
+              localStorage.setItem("currentPokemonIndex", currentPokemonIndex);
             }
             if (this.selectedBattleOption.option == "Fight")
               this.showBattleOptions = false;

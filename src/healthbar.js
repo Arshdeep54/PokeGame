@@ -28,21 +28,23 @@ export class Healthbar {
     this.totalbarwidth = 190;
   }
   loadData() {
+    var currentPokemonIndex=localStorage.getItem("currentPokemonIndex")
+
     this.pokemonName = this.isMine
-      ? JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0].pokemonName
+      ? JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[currentPokemonIndex].pokemonName
           .pokemon.name
       : JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY))?.rivalPokemon
           .pokemon.name;
     this.hp = this.isMine
-      ? JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0].playerData
+      ? JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[currentPokemonIndex].playerData
           .currenthp
       : JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)).rivalData.hp;
     this.maxhp = this.isMine
-      ? JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0].playerData.maxhp
+      ? JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[currentPokemonIndex].playerData.maxhp
       : JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)).rivalData
           .maxhp;
     this.level = this.isMine
-      ? JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[0].playerData.level
+      ? JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY))[currentPokemonIndex].playerData.level
       : JSON.parse(localStorage.getItem(ENUM.RIVAL_POKEMON_KEY)).rivalData
           .level;
     this.exp = JSON.parse(
@@ -54,6 +56,8 @@ export class Healthbar {
     this.hp = this.hp < 0 ? 0 : this.hp;
   }
   draw(context) {
+
+    var currentPokemonIndex=localStorage.getItem("currentPokemonIndex")
     this.loadData();
     context.fillStyle = "yellow";
     context.fillRect(this.xpos, this.ypos, this.width, this.height);
@@ -82,9 +86,9 @@ export class Healthbar {
         var diff = xpfill - this.totalbarwidth;
         this.exp = diff;
         var pokemon = JSON.parse(localStorage.getItem(ENUM.POKEMON_KEY));
-        pokemon[0].playerData.exp = diff;
-        pokemon[0].playerData.level = pokemon[0].playerData.level + 1;
-        this.level = pokemon[0].playerData.level;
+        pokemon[currentPokemonIndex].playerData.exp = diff;
+        pokemon[currentPokemonIndex].playerData.level = pokemon[currentPokemonIndex].playerData.level + 1;
+        this.level = pokemon[currentPokemonIndex].playerData.level;
         localStorage.setItem(ENUM.POKEMON_KEY, JSON.stringify(pokemon));
 
         xpfill = (this.exp / this.expforNextlevel) * this.totalbarwidth;
