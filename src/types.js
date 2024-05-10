@@ -13,7 +13,7 @@ export const ENUM = {
   BALLS:"balls",
   NO_POKEMON: "You don't have any pokemon",
   PRESS_ENTER: "Press Enter to Enter the ",
-  PICKONE:"PICK ONE BALL FROM THE TABLE",
+  PICKONE:"To PICK,touch table and Press ENTER",
   LOST_MESSAGE:">You lost $40",
   WON_MESSAGE:">You won +23 exp",
   CENTER_INSTRUCTION:"Touch the table and press Enter ",

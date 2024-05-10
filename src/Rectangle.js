@@ -13,7 +13,6 @@ export class Rectangle {
   draw(context) {
     var lineHeight=20
     const padding = this.ypos + 50;
-    
     context.fillStyle = this.color;
     context.fillRect(this.xpos, this.ypos, this.width, this.height);
     if (this.text == ENUM.MART) {
@@ -31,9 +30,10 @@ export class Rectangle {
       var instructions = [
         "Go to full screen and refresh for better frontend.",
         "Try touching a grass , it will say to get a pokemon from OAK's house.",
-        "Go to oak house and touch the table to pick one pokemon.",
+        "Go to oak house and touch the table (+ Enter) to pick one pokemon.",
         "Travel through the grass (for now horizontlly ) and you will randomly end up in war .",
-        "After war ends , get to the center ,touch the table ,press enter to heal your pokemon.",
+        "You can also change the pokemon in between the battle ( POKEMON option).",
+        "After war ends , get to the CENTER ,touch the table ,press enter to heal your pokemon.",
         "You can get a new pokemon each time you visit OAK's house .",
       ];
       let y = padding;

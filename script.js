@@ -105,7 +105,7 @@ const textBox = new TextBox(
   "Your pokemon is dead ",
   canvas.width / 3,
   canvas.height / 1.2,
-  canvas.width / 3.5,
+  canvas.width / 3,
   canvas.height / 8,
   context
 );
@@ -311,6 +311,10 @@ function drawLoader() {
   context.font = `${font} serif`;
   context.fillStyle = ENUM.COLORS.WHITE;
   context.fillText("LOADING...", canvas.width / 2-75, canvas.height / 2);
+  context.fillStyle = ENUM.COLORS.BLACK;
+
+  context.fillText("Explore around the buildings to find instructions ", canvas.width / 3, canvas.height / 2+70);
+  context.fillText("~Move with Arrow keys", canvas.width / 2, canvas.height / 2+95);
 
   const totalLoading = 20;
   const totalLoadingWidth = 150;

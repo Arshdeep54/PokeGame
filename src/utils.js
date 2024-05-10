@@ -323,15 +323,15 @@ export function getOakMap() {
   return {
     rectangles: [
       new Rectangle(
-        canvas.width / 2 - 250,
+        canvas.width / 3,
         canvas.height / 2 - 250,
-        500,
-        500,
+        canvas.width / 3,
+        480,
         "blue",
         ENUM.OAK
       ),
       new Rectangle(
-        canvas.width / 2 - 250,
+        canvas.width / 3,
         canvas.height / 2 - 40,
         10,
         80,
@@ -364,15 +364,15 @@ export function getCenterMap() {
   return {
     rectangles: [
       new Rectangle(
-        canvas.width / 2 - 250,
+        canvas.width / 3,
         canvas.height / 2 - 250,
-        500,
-        500,
+        canvas.width / 3,
+        480,
         "blue",
         ENUM.CENTER
       ),
       new Rectangle(
-        canvas.width / 2 - 250,
+        canvas.width / 3,
         canvas.height / 2 - 40,
         10,
         80,
@@ -447,15 +447,15 @@ export function getMartMap() {
   return {
     rectangles: [
       new Rectangle(
-        canvas.width / 2 - 250,
+        canvas.width / 3,
         canvas.height / 2 - 250,
-        500,
-        500,
+        canvas.width / 3,
+        480,
         ENUM.COLORS.HOUSE,
         ENUM.MART
       ),
       new Rectangle(
-        canvas.width / 2 - 250,
+        canvas.width / 3,
         canvas.height / 2 - 40,
         10,
         80,
@@ -469,15 +469,15 @@ export function getHouseMap() {
   return {
     rectangles: [
       new Rectangle(
-        canvas.width / 2 - 250,
-        canvas.height / 2 - 250,
-        500,
-        500,
+        canvas.width / 3,
+        canvas.height / 8,
+        canvas.width / 3,
+        600,
         ENUM.COLORS.HOUSE,
         ENUM.HOUSE
       ),
       new Rectangle(
-        canvas.width / 2 - 250,
+        canvas.width /3,
         canvas.height / 2 - 40,
         10,
         80,
