@@ -2,6 +2,7 @@
 
 Hosted : https://arshdeep54.github.io/PokeGame/
 
+Data fetched form : https://pokeapi.co/
 ## INSTRUCTIONS
 
 - Go to full screen and refresh for better frontend.
